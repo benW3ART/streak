@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STREAK — Complete UI Reference</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --streak-orange: #FF4D00;
+            --ember: #FF6B35;
+            --charcoal: #0D0D0D;
+            --ash: #1A1A1A;
+            --card: #222222;
+            --alive-green: #00FF88;
+            --white: #FFFFFF;
+            --gold: #FFD700;
+            --blood-red: #CC0000;
+            --solana-purple: #9945FF;
+            --solana-green: #14F195;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #111;
+            color: var(--white);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .doc-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .doc-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            letter-spacing: 0.03em;
+            margin-bottom: 8px;
+        }
+
+        .doc-logo .a { color: var(--streak-orange); }
+
+        .doc-subtitle {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .doc-meta {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.3);
+            margin-top: 16px;
+        }
+
+        /* Section Headers */
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            color: var(--streak-orange);
+        }
+
+        .section-desc {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 32px;
+        }
+
+        /* Phone Frames Grid */
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            justify-items: center;
+        }
+
+        .screen-container {
+            text-align: center;
+        }
+
+        .screen-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--white);
+        }
+
+        .screen-desc {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 16px;
+        }
+
+        /* Phone Mockup */
+        .phone {
+            width: 280px;
+            height: 560px;
+            background: #000;
+            border-radius: 40px;
+            border: 3px solid #333;
+            padding: 12px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 28px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--charcoal);
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* App Components */
+        .app-header {
+            padding: 44px 16px 12px;
+            text-align: center;
+        }
+
+        .app-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .app-logo .a { color: var(--streak-orange); }
+
+        .app-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .app-nav {
+            padding: 12px 16px 20px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--ash);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .nav-item.active { color: var(--streak-orange); }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Day Counter */
+        .day-counter {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 80px;
+            line-height: 1;
+            color: var(--streak-orange);
+            text-shadow: 0 0 60px rgba(255, 77, 0, 0.5);
+        }
+
+        .day-counter.danger {
+            color: var(--blood-red);
+            text-shadow: 0 0 60px rgba(204, 0, 0, 0.5);
+        }
+
+        .day-counter.success {
+            color: var(--alive-green);
+            text-shadow: 0 0 60px rgba(0, 255, 136, 0.5);
+        }
+
+        .day-counter.dead {
+            color: var(--white);
+            text-shadow: none;
+        }
+
+        .day-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        /* Stats */
+        .stake-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .stake-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .timer {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 16px;
+        }
+
+        .timer span { color: var(--streak-orange); }
+        .timer.danger span { color: var(--blood-red); }
+
+        /* Buttons */
+        .btn-primary {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            padding: 14px 32px;
+            background: var(--streak-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 77, 0, 0.4);
+        }
+
+        .btn-primary.success {
+            background: var(--alive-green);
+            color: var(--charcoal);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-primary.danger {
+            background: var(--blood-red);
+            box-shadow: 0 0 30px rgba(204, 0, 0, 0.4);
+        }
+
+        .btn-primary.disabled {
+            background: #444;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+
+        .btn-secondary {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            padding: 12px 24px;
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        /* Global Stats */
+        .global-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            color: var(--white);
+        }
+
+        .stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Slider */
+        .slider-container {
+            width: 100%;
+            padding: 0 16px;
+            margin-bottom: 16px;
+        }
+
+        .slider-track {
+            width: 100%;
+            height: 8px;
+            background: var(--card);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .slider-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 30%;
+            background: var(--streak-orange);
+            border-radius: 4px;
+        }
+
+        .slider-thumb {
+            position: absolute;
+            top: 50%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+
+        .slider-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Bonus Window */
+        .bonus-banner {
+            background: linear-gradient(90deg, rgba(255, 77, 0, 0.2) 0%, rgba(255, 107, 53, 0.2) 100%);
+            border: 1px solid rgba(255, 77, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .bonus-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 12px;
+            color: var(--streak-orange);
+            letter-spacing: 0.1em;
+        }
+
+        .bonus-timer {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Lifeline Badge */
+        .lifeline-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--alive-green);
+            margin-bottom: 16px;
+        }
+
+        .lifeline-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Leaderboard */
+        .leaderboard-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            padding: 8px 12px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .tab.active {
+            background: var(--streak-orange);
+            border-color: var(--streak-orange);
+            color: var(--white);
+        }
+
+        .leaderboard-list {
+            width: 100%;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rank {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            color: var(--streak-orange);
+            min-width: 24px;
+        }
+
+        .rank.gold { color: var(--gold); }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-wallet {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--white);
+        }
+
+        .player-stats {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Referral Section */
+        .referral-link {
+            width: 100%;
+            background: var(--card);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .referral-url {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            padding: 6px 12px;
+            background: var(--streak-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+        }
+
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .ref-stat {
+            text-align: center;
+            background: var(--card);
+            border-radius: 8px;
+            padding: 12px 8px;
+        }
+
+        .ref-stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            color: var(--white);
+        }
+
+        .ref-stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .lifeline-progress {
+            background: var(--card);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .lifeline-progress-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .lifeline-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .lifeline-progress-fill {
+            height: 100%;
+            width: 66%;
+            background: var(--alive-green);
+            border-radius: 3px;
+        }
+
+        /* Death Message */
+        .death-message {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 8px;
+        }
+
+        .death-amount {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            color: var(--blood-red);
+            margin-bottom: 32px;
+        }
+
+        /* Saved Message */
+        .saved-message {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            color: var(--alive-green);
+            margin-bottom: 8px;
+        }
+
+        .saved-detail {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 24px;
+        }
+
+        /* Background States */
+        .phone-screen.danger-bg {
+            background: linear-gradient(180deg, rgba(204, 0, 0, 0.2) 0%, var(--charcoal) 100%);
+        }
+
+        .phone-screen.dead-bg {
+            background: #000;
+        }
+
+        .phone-screen.bonus-bg {
+            background: linear-gradient(180deg, rgba(255, 77, 0, 0.1) 0%, var(--charcoal) 100%);
+        }
+
+        /* Component Showcase */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .component-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .component-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        /* Color Swatches */
+        .colors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+        }
+
+        .color-swatch {
+            text-align: center;
+        }
+
+        .swatch {
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .color-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: var(--white);
+        }
+
+        .color-hex {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Typography */
+        .type-sample {
+            margin-bottom: 24px;
+        }
+
+        .type-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 8px;
+        }
+
+        .type-bebas {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .type-mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Referred by badge */
+        .referred-badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--solana-green);
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Document Header -->
+    <div class="doc-header">
+        <div class="doc-logo">STRE<span class="a">A</span>K</div>
+        <div class="doc-subtitle">Complete UI Reference</div>
+        <div class="doc-meta">Version 1.0 | January 2026 | For Development</div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- SECTION: CORE SCREENS -->
+    <!-- ================================================ -->
+    <div class="section">
+        <div class="section-title">CORE SCREENS</div>
+        <div class="section-desc">The main user journey screens</div>
+
+        <div class="screens-grid">
+
+            <!-- Screen 1: Home (Not Connected) -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-001: HOME</div>
+                <div class="screen-desc">Not connected state</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div class="global-stats">
+                                <div class="stat">
+                                    <div class="stat-value">47,832</div>
+                                    <div class="stat-label">Players</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-value">12.8K</div>
+                                    <div class="stat-label">SOL Pool</div>
+                                </div>
+                            </div>
+                            <div class="timer" style="margin-bottom: 24px;">Last death: <span>2 min ago</span></div>
+                            <button class="btn-primary">START</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 2: Stake Entry -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-002: STAKE ENTRY</div>
+                <div class="screen-desc">Choose stake amount</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div style="font-family: 'Bebas Neue'; font-size: 24px; margin-bottom: 24px;">STAKE TO PLAY</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill"></div>
+                                    <div class="slider-thumb"></div>
+                                </div>
+                                <div class="slider-labels">
+                                    <span class="slider-label">0.05 SOL</span>
+                                    <span class="slider-label">2.0 SOL</span>
+                                </div>
+                            </div>
+                            <div class="stake-value" style="margin: 16px 0;">0.15 SOL</div>
+                            <div style="font-family: 'Space Mono'; font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 24px; text-align: center;">
+                                Miss one day = lose it all<br/>
+                                Check in daily = grow 0.1%
+                            </div>
+                            <button class="btn-primary">STAKE AND BEGIN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 2b: Stake Entry with Referral -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-002b: STAKE (REFERRED)</div>
+                <div class="screen-desc">Joined via referral link</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div class="referred-badge">Referred by 7xK4...9mPq</div>
+                            <div style="font-family: 'Bebas Neue'; font-size: 24px; margin-bottom: 24px;">STAKE TO PLAY</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill"></div>
+                                    <div class="slider-thumb"></div>
+                                </div>
+                                <div class="slider-labels">
+                                    <span class="slider-label">0.05 SOL</span>
+                                    <span class="slider-label">2.0 SOL</span>
+                                </div>
+                            </div>
+                            <div class="stake-value" style="margin: 16px 0;">0.15 SOL</div>
+                            <div style="font-family: 'Space Mono'; font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 24px; text-align: center;">
+                                Miss one day = lose it all<br/>
+                                Check in daily = grow 0.1%
+                            </div>
+                            <button class="btn-primary">STAKE AND BEGIN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: Active Streak (Alive) -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-003: ACTIVE STREAK</div>
+                <div class="screen-desc">Alive state, needs check-in</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div class="lifeline-badge">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                2 Lifelines
+                            </div>
+                            <div class="day-counter">47</div>
+                            <div class="day-label">Day Streak</div>
+                            <div class="stake-label">Current Stake</div>
+                            <div class="stake-value">0.0524 SOL</div>
+                            <div class="timer"><span>18:42:31</span> until deadline</div>
+                            <button class="btn-primary">CHECK IN</button>
+                        </div>
+                        <div class="app-nav">
+                            <div class="nav-item active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Streak
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                Chain
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                                Board
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3b: Active Streak (Checked In) -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-003b: CHECKED IN</div>
+                <div class="screen-desc">Safe until tomorrow</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div class="lifeline-badge">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                2 Lifelines
+                            </div>
+                            <div class="day-counter success">48</div>
+                            <div class="day-label">Day Streak</div>
+                            <div class="stake-label">Current Stake</div>
+                            <div class="stake-value">0.0525 SOL</div>
+                            <div class="timer">Safe until <span>00:00 UTC</span></div>
+                            <button class="btn-primary success">DAY 48 COMPLETE</button>
+                        </div>
+                        <div class="app-nav">
+                            <div class="nav-item active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Streak
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                Chain
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                                Board
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: Death -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-004: DEATH</div>
+                <div class="screen-desc">Player missed check-in</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen dead-bg">
+                        <div class="app-header">
+                            <div class="app-logo" style="color: rgba(255,255,255,0.3);">STRE<span class="a" style="color: rgba(255,77,0,0.5);">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div class="day-counter dead">0</div>
+                            <div class="day-label" style="color: rgba(255,255,255,0.3);">Streak Over</div>
+                            <div class="death-message">You lost</div>
+                            <div class="death-amount">0.0524 SOL</div>
+                            <button class="btn-secondary">START OVER</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- SECTION: STATE VARIATIONS -->
+    <!-- ================================================ -->
+    <div class="section">
+        <div class="section-title">STATE VARIATIONS</div>
+        <div class="section-desc">Different states of the main streak screen</div>
+
+        <div class="screens-grid">
+
+            <!-- Danger Zone -->
+            <div class="screen-container">
+                <div class="screen-label">STATE: DANGER ZONE</div>
+                <div class="screen-desc">&lt;1 hour remaining</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen danger-bg">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div class="day-counter danger">47</div>
+                            <div class="day-label">Day Streak</div>
+                            <div class="stake-label">Current Stake</div>
+                            <div class="stake-value">0.0524 SOL</div>
+                            <div class="timer danger"><span>00:47:12</span> HURRY!</div>
+                            <button class="btn-primary danger">CHECK IN NOW</button>
+                        </div>
+                        <div class="app-nav">
+                            <div class="nav-item active" style="color: var(--blood-red);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Streak
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                                Chain
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                                Board
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bonus Window Active -->
+            <div class="screen-container">
+                <div class="screen-label">STATE: BONUS WINDOW</div>
+                <div class="screen-desc">15-min opportunity</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen bonus-bg">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <div class="bonus-banner">
+                                <div class="bonus-text">BONUS WINDOW OPEN</div>
+                                <div class="bonus-timer">12:34 remaining</div>
+                            </div>
+                            <div class="day-counter" style="font-size: 64px;">48</div>
+                            <div class="day-label">Day Streak</div>
+                            <div class="stake-label">Current Stake</div>
+                            <div class="stake-value">0.0525 SOL</div>
+                            <div class="timer">Safe until <span>00:00 UTC</span></div>
+                            <button class="btn-primary" style="background: var(--ember);">CLAIM BONUS +0.05%</button>
+                        </div>
+                        <div class="app-nav">
+                            <div class="nav-item active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Streak
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                                Chain
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                                Board
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lifeline Saved -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-007: LIFELINE SAVED</div>
+                <div class="screen-desc">Auto-saved from death</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div class="app-logo">STRE<span class="a">A</span>K</div>
+                        </div>
+                        <div class="app-main">
+                            <svg viewBox="0 0 24 24" fill="var(--alive-green)" width="48" height="48" style="margin-bottom: 16px;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            <div class="saved-message">LIFELINE SAVED YOU</div>
+                            <div class="saved-detail">You missed yesterday. 1 lifeline was used.</div>
+                            <div class="day-counter success" style="font-size: 48px;">47</div>
+                            <div class="day-label">Streak Continues</div>
+                            <div style="font-family: 'Space Mono'; font-size: 11px; color: rgba(255,255,255,0.5); margin: 16px 0;">1 lifeline remaining</div>
+                            <button class="btn-primary success">CONTINUE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- SECTION: FEATURE SCREENS -->
+    <!-- ================================================ -->
+    <div class="section">
+        <div class="section-title">FEATURE SCREENS</div>
+        <div class="section-desc">Leaderboard and Referrals</div>
+
+        <div class="screens-grid">
+
+            <!-- Leaderboard -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-005: LEADERBOARD</div>
+                <div class="screen-desc">Rankings by streak</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div style="font-family: 'Bebas Neue'; font-size: 20px;">SURVIVORS</div>
+                        </div>
+                        <div class="app-main" style="justify-content: flex-start; padding-top: 8px;">
+                            <div class="leaderboard-tabs">
+                                <div class="tab active">BY STREAK</div>
+                                <div class="tab">BY STAKE</div>
+                            </div>
+                            <div class="leaderboard-list">
+                                <div class="leaderboard-item">
+                                    <div class="rank gold">1</div>
+                                    <div class="player-info">
+                                        <div class="player-wallet">8xK4...2mNq</div>
+                                        <div class="player-stats">Day 127 | 2.34 SOL</div>
+                                    </div>
+                                </div>
+                                <div class="leaderboard-item">
+                                    <div class="rank gold">2</div>
+                                    <div class="player-info">
+                                        <div class="player-wallet">3pR7...9kLm</div>
+                                        <div class="player-stats">Day 98 | 1.87 SOL</div>
+                                    </div>
+                                </div>
+                                <div class="leaderboard-item">
+                                    <div class="rank gold">3</div>
+                                    <div class="player-info">
+                                        <div class="player-wallet">9vB2...4xPq</div>
+                                        <div class="player-stats">Day 84 | 0.95 SOL</div>
+                                    </div>
+                                </div>
+                                <div class="leaderboard-item">
+                                    <div class="rank">4</div>
+                                    <div class="player-info">
+                                        <div class="player-wallet">2mN8...7rKs</div>
+                                        <div class="player-stats">Day 71 | 0.78 SOL</div>
+                                    </div>
+                                </div>
+                                <div class="leaderboard-item">
+                                    <div class="rank">5</div>
+                                    <div class="player-info">
+                                        <div class="player-wallet">5kL3...1pQr</div>
+                                        <div class="player-stats">Day 63 | 0.54 SOL</div>
+                                    </div>
+                                </div>
+                                <div class="leaderboard-item" style="background: rgba(255,77,0,0.1); margin: 0 -16px; padding: 10px 16px;">
+                                    <div class="rank">#47</div>
+                                    <div class="player-info">
+                                        <div class="player-wallet" style="color: var(--streak-orange);">You</div>
+                                        <div class="player-stats">Day 47 | 0.05 SOL</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="app-nav">
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Streak
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                                Chain
+                            </div>
+                            <div class="nav-item active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                                Board
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Referrals / Chain -->
+            <div class="screen-container">
+                <div class="screen-label">SCR-006: CHAIN / INVITE</div>
+                <div class="screen-desc">Referral stats and link</div>
+                <div class="phone">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <div style="font-family: 'Bebas Neue'; font-size: 20px;">YOUR CHAIN</div>
+                        </div>
+                        <div class="app-main" style="justify-content: flex-start; padding-top: 8px;">
+                            <div class="referral-link">
+                                <div class="referral-url">streak.app/?ref=7xK4...9mPq</div>
+                                <button class="copy-btn">COPY LINK</button>
+                            </div>
+                            <div class="referral-stats">
+                                <div class="ref-stat">
+                                    <div class="ref-stat-value">8</div>
+                                    <div class="ref-stat-label">Direct</div>
+                                </div>
+                                <div class="ref-stat">
+                                    <div class="ref-stat-value">23</div>
+                                    <div class="ref-stat-label">Chain</div>
+                                </div>
+                                <div class="ref-stat">
+                                    <div class="ref-stat-value" style="color: var(--alive-green);">0.34</div>
+                                    <div class="ref-stat-label">Earned</div>
+                                </div>
+                            </div>
+                            <div class="lifeline-progress">
+                                <div class="lifeline-progress-text">2 lifelines | 1 more referral for +1</div>
+                                <div class="lifeline-progress-bar">
+                                    <div class="lifeline-progress-fill"></div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 16px; width: 100%;">
+                                <div style="font-family: 'Space Mono'; font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">DIRECT REFERRALS</div>
+                                <div class="leaderboard-item">
+                                    <div style="width: 8px; height: 8px; background: var(--alive-green); border-radius: 50%;"></div>
+                                    <div class="player-info">
+                                        <div class="player-wallet">3pR7...9kLm</div>
+                                        <div class="player-stats">Day 12 | Alive</div>
+                                    </div>
+                                </div>
+                                <div class="leaderboard-item">
+                                    <div style="width: 8px; height: 8px; background: var(--blood-red); border-radius: 50%;"></div>
+                                    <div class="player-info">
+                                        <div class="player-wallet">9vB2...4xPq</div>
+                                        <div class="player-stats">Died Day 7 | +0.02 SOL</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="app-nav">
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Streak
+                            </div>
+                            <div class="nav-item active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                Chain
+                            </div>
+                            <div class="nav-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                                Board
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- SECTION: COLOR PALETTE -->
+    <!-- ================================================ -->
+    <div class="section">
+        <div class="section-title">COLOR PALETTE</div>
+        <div class="section-desc">Brand colors for implementation</div>
+
+        <div class="colors-grid">
+            <div class="color-swatch">
+                <div class="swatch" style="background: #FF4D00;"></div>
+                <div class="color-name">STREAK Orange</div>
+                <div class="color-hex">#FF4D00</div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch" style="background: #FF6B35;"></div>
+                <div class="color-name">Ember</div>
+                <div class="color-hex">#FF6B35</div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch" style="background: #0D0D0D; border: 1px solid #333;"></div>
+                <div class="color-name">Charcoal</div>
+                <div class="color-hex">#0D0D0D</div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch" style="background: #1A1A1A; border: 1px solid #333;"></div>
+                <div class="color-name">Ash</div>
+                <div class="color-hex">#1A1A1A</div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch" style="background: #222222; border: 1px solid #333;"></div>
+                <div class="color-name">Card</div>
+                <div class="color-hex">#222222</div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch" style="background: #00FF88;"></div>
+                <div class="color-name">Alive Green</div>
+                <div class="color-hex">#00FF88</div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch" style="background: #CC0000;"></div>
+                <div class="color-name">Blood Red</div>
+                <div class="color-hex">#CC0000</div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch" style="background: #FFD700;"></div>
+                <div class="color-name">Gold</div>
+                <div class="color-hex">#FFD700</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- SECTION: TYPOGRAPHY -->
+    <!-- ================================================ -->
+    <div class="section">
+        <div class="section-title">TYPOGRAPHY</div>
+        <div class="section-desc">Font families and sizes</div>
+
+        <div class="component-card" style="max-width: 600px;">
+            <div class="type-sample">
+                <div class="type-label">Day Counter — Bebas Neue, 72-180px</div>
+                <div class="type-bebas" style="font-size: 72px; color: var(--streak-orange);">47</div>
+            </div>
+            <div class="type-sample">
+                <div class="type-label">Headlines — Bebas Neue, 24-48px</div>
+                <div class="type-bebas" style="font-size: 32px;">STAKE TO PLAY</div>
+            </div>
+            <div class="type-sample">
+                <div class="type-label">Body / UI — Space Mono, 12-14px</div>
+                <div class="type-mono" style="font-size: 14px; color: rgba(255,255,255,0.7);">Miss one day = lose it all</div>
+            </div>
+            <div class="type-sample">
+                <div class="type-label">Labels — Space Mono, 10-11px</div>
+                <div class="type-mono" style="font-size: 10px; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); text-transform: uppercase;">Current Stake</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- SECTION: COMPONENTS -->
+    <!-- ================================================ -->
+    <div class="section">
+        <div class="section-title">COMPONENTS</div>
+        <div class="section-desc">Reusable UI elements</div>
+
+        <div class="components-grid">
+            <div class="component-card">
+                <div class="component-label">Primary Buttons</div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="btn-primary">CHECK IN</button>
+                    <button class="btn-primary success">DAY 48 COMPLETE</button>
+                    <button class="btn-primary danger">CHECK IN NOW</button>
+                    <button class="btn-primary disabled">CHECKED IN</button>
+                </div>
+            </div>
+            <div class="component-card">
+                <div class="component-label">Secondary Buttons</div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <button class="btn-secondary">START OVER</button>
+                    <button class="btn-secondary">WITHDRAW</button>
+                </div>
+            </div>
+            <div class="component-card">
+                <div class="component-label">Badges</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <div class="lifeline-badge">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        2 Lifelines
+                    </div>
+                    <div class="referred-badge">Referred by 7xK4...9mPq</div>
+                </div>
+            </div>
+            <div class="component-card">
+                <div class="component-label">Bonus Banner</div>
+                <div class="bonus-banner">
+                    <div class="bonus-text">BONUS WINDOW OPEN</div>
+                    <div class="bonus-timer">12:34 remaining</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 60px 20px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px;">
+        <div class="doc-logo" style="font-size: 24px;">STRE<span class="a">A</span>K</div>
+        <div style="font-family: 'Space Mono'; font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 8px;">
+            UI Reference v1.0 | For Development Only
+        </div>
+    </div>
+
+</body>
+</html>

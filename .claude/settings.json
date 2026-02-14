@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo \"<genius_team_context>\"; echo \"Version: 8.0\"; echo \"\"; if [ -f .genius/state.json ]; then echo \"<current_state>\"; cat .genius/state.json 2>/dev/null | jq -r \".phase, .currentSkill\" 2>/dev/null || cat .genius/state.json; echo \"</current_state>\"; fi; if [ -f .mind/MEMORY.md ]; then echo \"<memory>\"; head -30 .mind/MEMORY.md; echo \"</memory>\"; fi; if [ -f PROGRESS.md ]; then echo \"<progress>\"; head -50 PROGRESS.md; echo \"</progress>\"; fi; if [ -f KNOWLEDGE-BASE.md ]; then echo \"<knowledge>\"; head -30 KNOWLEDGE-BASE.md; echo \"</knowledge>\"; fi; if [ -f .claude/plan.md ]; then echo \"<tasks_hydration>\"; total=$(grep -c \"^- \\\\[\" .claude/plan.md 2>/dev/null || echo 0); completed=$(grep -c \"^- \\\\[x\\\\]\" .claude/plan.md 2>/dev/null || echo 0); pending=$(grep -c \"^- \\\\[ \\\\]\" .claude/plan.md 2>/dev/null || echo 0); in_progress=$(grep -c \"^- \\\\[~\\\\]\" .claude/plan.md 2>/dev/null || echo 0); echo \"TASKS: $completed/$total complete ($pending pending, $in_progress in-progress)\"; grep -E \"^- \\\\[\" .claude/plan.md 2>/dev/null | head -25; next=$(grep -m1 \"^- \\\\[ \\\\]\" .claude/plan.md 2>/dev/null | sed \"s/^- \\\\[ \\\\] //\"); if [ -n \"$next\" ]; then echo \"NEXT_TASK: $next\"; fi; echo \"</tasks_hydration>\"; fi; echo \"</genius_team_context>\"'"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo \"<critical_context_preserve>\"; if [ -f .genius/state.json ]; then echo \"STATE:\"; cat .genius/state.json; fi; if [ -f .claude/plan.md ]; then echo \"TASKS:\"; grep -E \"^- \\\\[\" .claude/plan.md | head -30; fi; if [ -f DECISIONS.md ]; then echo \"DECISIONS:\"; head -20 DECISIONS.md; fi; if [ -f .mind/MEMORY.md ]; then echo \"MEMORY:\"; head -30 .mind/MEMORY.md; fi; echo \"</critical_context_preserve>\"'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [ -f .genius/state.json ]; then phase=$(jq -r .phase .genius/state.json 2>/dev/null); if [ \"$phase\" != \"EXECUTION\" ] && [ \"$phase\" != \"execution\" ]; then echo \"INFO: Task tool called in phase: $phase\"; fi; fi'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'if [ -f .genius/state.json ]; then echo \"[Genius Team] File modified, state preserved.\"; fi' 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "GENIUS_TEAM_VERSION": "8.0.0",
+    "GENIUS_STATE_FILE": ".genius/state.json",
+    "GENIUS_MEMORY_DIR": ".mind"
+  }
+}

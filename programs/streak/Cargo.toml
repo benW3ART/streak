@@ -1,0 +1,28 @@
+[package]
+name = "streak"
+version = "0.1.0"
+description = "Daily check-in game for Solana Seeker"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "streak"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+
+[dependencies]
+anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.30.1", features = ["token"] }
+
+[profile.release]
+overflow-checks = true
+lto = true
+codegen-units = 1
+opt-level = "z"
+strip = true

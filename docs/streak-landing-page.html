@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STREAK — Your stake grows every day you show up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --streak-orange: #FF4D00;
+            --ember: #FF6B35;
+            --charcoal: #0D0D0D;
+            --ash: #1A1A1A;
+            --card: #222222;
+            --alive-green: #00FF88;
+            --white: #FFFFFF;
+            --gold: #FFD700;
+            --blood-red: #CC0000;
+            --solana-purple: #9945FF;
+            --solana-green: #14F195;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--charcoal);
+            color: var(--white);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Mobile-first container */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1000px;
+            }
+        }
+
+        /* Ecosystem Banner */
+        .ecosystem-banner {
+            background: linear-gradient(90deg, rgba(153, 69, 255, 0.15) 0%, rgba(20, 241, 149, 0.15) 100%);
+            border-bottom: 1px solid rgba(153, 69, 255, 0.3);
+            padding: 12px 20px;
+            text-align: center;
+        }
+
+        .ecosystem-banner .badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .ecosystem-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.05em;
+        }
+
+        .ecosystem-badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .ecosystem-badge.solana svg { color: var(--solana-purple); }
+        .ecosystem-badge.seeker svg { color: var(--solana-green); }
+        .ecosystem-badge.skr svg { color: var(--gold); }
+
+        /* Navigation */
+        nav {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            letter-spacing: 0.03em;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-logo .a { color: var(--streak-orange); }
+
+        .nav-cta {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            padding: 10px 16px;
+            background: var(--streak-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(255, 77, 0, 0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-day {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(100px, 30vw, 180px);
+            line-height: 0.85;
+            color: var(--streak-orange);
+            text-shadow: 0 0 80px rgba(255, 77, 0, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.25em;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(32px, 8vw, 48px);
+            line-height: 1.1;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 320px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            letter-spacing: 0.05em;
+            padding: 16px 32px;
+            background: var(--streak-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 0 40px rgba(255, 77, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .hero-cta:hover {
+            background: var(--ember);
+            transform: translateY(-2px);
+            box-shadow: 0 0 60px rgba(255, 77, 0, 0.4);
+        }
+
+        .hero-cta svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .hero-note {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 16px;
+        }
+
+        /* Phone Mockup */
+        .phone-section {
+            padding: 40px 20px 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-mockup {
+            width: 280px;
+            height: 580px;
+            background: #000;
+            border-radius: 40px;
+            border: 3px solid #333;
+            padding: 12px;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 28px;
+            background: #000;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--ash);
+            border-radius: 32px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* App UI Inside Phone */
+        .app-header {
+            padding: 44px 20px 16px;
+            text-align: center;
+        }
+
+        .app-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 16px;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .app-logo .a { color: var(--streak-orange); }
+
+        .app-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .app-counter {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            color: var(--streak-orange);
+            line-height: 1;
+            text-shadow: 0 0 40px rgba(255, 77, 0, 0.5);
+        }
+
+        .app-day-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .app-stake {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 4px;
+        }
+
+        .app-stake-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            color: var(--white);
+            margin-bottom: 24px;
+        }
+
+        .app-timer {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .app-timer span {
+            color: var(--streak-orange);
+        }
+
+        .app-checkin-btn {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            padding: 14px 40px;
+            background: var(--streak-orange);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(255, 77, 0, 0.4);
+        }
+
+        .app-footer {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .app-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Space Mono', monospace;
+            font-size: 8px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .app-nav-item.active {
+            color: var(--streak-orange);
+        }
+
+        .app-nav-item svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Seeker Badge on Phone */
+        .seeker-badge {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, rgba(153, 69, 255, 0.2) 0%, rgba(20, 241, 149, 0.2) 100%);
+            border: 1px solid rgba(153, 69, 255, 0.3);
+            border-radius: 20px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: var(--solana-green);
+            white-space: nowrap;
+        }
+
+        .seeker-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* How It Works */
+        .how-section {
+            padding: 60px 20px;
+            background: var(--ash);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(28px, 6vw, 36px);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title .orange { color: var(--streak-orange); }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--streak-orange);
+            line-height: 1;
+            min-width: 40px;
+        }
+
+        .step-content h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* The Stakes */
+        .stakes-section {
+            padding: 60px 20px;
+        }
+
+        .stakes-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 32px 24px;
+            border-left: 4px solid var(--blood-red);
+        }
+
+        .stakes-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: var(--blood-red);
+        }
+
+        .stakes-card p {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Features Grid */
+        .features-section {
+            padding: 60px 20px;
+            background: var(--ash);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .feature-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 77, 0, 0.15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: var(--streak-orange);
+        }
+
+        .feature-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+        }
+
+        /* SKR Farming Section */
+        .skr-section {
+            padding: 60px 20px;
+            background: linear-gradient(180deg, var(--charcoal) 0%, rgba(153, 69, 255, 0.08) 50%, var(--charcoal) 100%);
+        }
+
+        .skr-card {
+            background: linear-gradient(135deg, rgba(153, 69, 255, 0.1) 0%, rgba(20, 241, 149, 0.1) 100%);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .skr-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .skr-badge svg {
+            width: 18px;
+            height: 18px;
+            color: var(--gold);
+        }
+
+        .skr-badge span {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .skr-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .skr-card p {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .skr-stats {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skr-stat {
+            text-align: center;
+        }
+
+        .skr-stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            color: var(--solana-green);
+        }
+
+        .skr-stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.05em;
+        }
+
+        /* Death States Preview */
+        .states-section {
+            padding: 60px 20px;
+        }
+
+        .states-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(24px, 5vw, 32px);
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .states-scroll {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .states-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .state-preview {
+            flex: 0 0 200px;
+            scroll-snap-align: start;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .state-preview.danger {
+            background: linear-gradient(180deg, rgba(204, 0, 0, 0.2) 0%, var(--card) 100%);
+            border: 1px solid rgba(204, 0, 0, 0.3);
+        }
+
+        .state-preview.dead {
+            background: #000;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .state-preview.success {
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .state-preview-counter {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .state-preview.alive .state-preview-counter { color: var(--streak-orange); }
+        .state-preview.danger .state-preview-counter { color: var(--blood-red); }
+        .state-preview.dead .state-preview-counter { color: var(--white); }
+        .state-preview.success .state-preview-counter { color: var(--alive-green); }
+
+        .state-preview-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .state-preview-msg {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Final CTA */
+        .final-cta {
+            padding: 80px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--ash) 0%, var(--charcoal) 100%);
+        }
+
+        .final-cta h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(36px, 10vw, 56px);
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .final-cta p {
+            font-family: 'Space Mono', monospace;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 32px;
+        }
+
+        .download-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            min-width: 260px;
+            justify-content: center;
+        }
+
+        .download-btn.primary {
+            background: var(--streak-orange);
+            color: var(--white);
+            box-shadow: 0 0 40px rgba(255, 77, 0, 0.3);
+        }
+
+        .download-btn.primary:hover {
+            background: var(--ember);
+            transform: translateY(-2px);
+        }
+
+        .download-btn.secondary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .download-btn.secondary:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .download-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo .a { color: var(--streak-orange); }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .footer-links a {
+            font-family: 'Space Mono', monospace;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--streak-orange);
+        }
+
+        .footer-ecosystem {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-ecosystem span {
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-ecosystem svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.5;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .phone-mockup {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 30px rgba(255, 77, 0, 0.4); }
+            50% { box-shadow: 0 0 50px rgba(255, 77, 0, 0.6); }
+        }
+
+        .app-checkin-btn {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Ecosystem Banner -->
+    <div class="ecosystem-banner">
+        <div class="badges">
+            <div class="ecosystem-badge solana">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4.5 18.5L7.5 15.5H21L18 18.5H4.5ZM4.5 12.25L7.5 9.25H21L18 12.25H4.5ZM18 5.5L21 8.5H7.5L4.5 5.5H18Z"/>
+                </svg>
+                <span>BUILT ON SOLANA</span>
+            </div>
+            <div class="ecosystem-badge seeker">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <circle cx="12" cy="18" r="1" fill="currentColor"/>
+                </svg>
+                <span>SEEKER OPTIMIZED</span>
+            </div>
+            <div class="ecosystem-badge skr">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>FARM $SKR</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="nav-logo">STRE<span class="a">A</span>K</a>
+        <a href="#download" class="nav-cta">GET APP</a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-day">47</div>
+        <div class="hero-label">Current Streak</div>
+        <h1>Your stake grows every day you show up.</h1>
+        <p class="hero-sub">One tap. Real SOL. Watch it compound. How long can you go?</p>
+        <a href="#download" class="hero-cta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            DOWNLOAD NOW
+        </a>
+        <p class="hero-note">Free on Solana dApp Store</p>
+    </section>
+
+    <!-- Phone Mockup -->
+    <section class="phone-section">
+        <div class="phone-mockup">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <div class="app-header">
+                    <div class="app-logo">STRE<span class="a">A</span>K</div>
+                </div>
+                <div class="app-main">
+                    <div class="app-counter">47</div>
+                    <div class="app-day-label">Day Streak</div>
+                    <div class="app-stake">Current Stake</div>
+                    <div class="app-stake-value">0.0524 SOL</div>
+                    <div class="app-timer"><span>18:42:31</span> until deadline</div>
+                    <button class="app-checkin-btn">CHECK IN</button>
+                </div>
+                <div class="app-footer">
+                    <div class="app-nav-item active">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        Streak
+                    </div>
+                    <div class="app-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        Chain
+                    </div>
+                    <div class="app-nav-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 20V10"/>
+                            <path d="M18 20V4"/>
+                            <path d="M6 20v-4"/>
+                        </svg>
+                        Board
+                    </div>
+                </div>
+            </div>
+            <div class="seeker-badge">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4.5 18.5L7.5 15.5H21L18 18.5H4.5ZM4.5 12.25L7.5 9.25H21L18 12.25H4.5ZM18 5.5L21 8.5H7.5L4.5 5.5H18Z"/>
+                </svg>
+                Seeker Ready
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-section">
+        <div class="container">
+            <h2 class="section-title">HOW <span class="orange">STREAK</span> WORKS</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>STAKE SOL</h3>
+                        <p>Lock your SOL in the contract. This is your skin in the game.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>CHECK IN DAILY</h3>
+                        <p>One tap. One transaction. Takes 10 seconds.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>GROW 0.1% DAILY</h3>
+                        <p>Every day you survive, your stake compounds. Catch bonus windows for extra gains.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>NEVER MISS</h3>
+                        <p>Miss one day? Your entire stake goes to the pool. No exceptions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Stakes -->
+    <section class="stakes-section">
+        <div class="container">
+            <div class="stakes-card">
+                <h3>⚠️ THE REAL STAKES</h3>
+                <p>Miss a day and your entire stake is distributed to survivors. Day 1 or Day 100 — the rules don't change. The longer you go, the more you have to lose. That's the game.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">MORE THAN <span class="orange">SURVIVAL</span></h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <h3>BONUS WINDOWS</h3>
+                    <p>4 random windows per day. Catch them for +0.02% extra growth each. Max 0.18% daily if you catch all.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>REFERRAL CHAINS</h3>
+                    <p>3 levels deep. When someone in your chain dies, you get paid. Build your network.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>GUARDIANS</h3>
+                    <p>Watch over 3 friends. Get notified if they're about to miss. Ping them once a week to save their streak.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                    </div>
+                    <h3>HEIRS</h3>
+                    <p>Choose one heir from your chain. When you die, 50% goes to them instead of the pool.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SKR Farming -->
+    <section class="skr-section">
+        <div class="container">
+            <div class="skr-card">
+                <div class="skr-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>$SKR WAVE 2</span>
+                </div>
+                <h3>FARM SKR WITHOUT THINKING</h3>
+                <p>Already grinding for SKR Wave 2? STREAK generates 6-10 organic Solana transactions daily. Stop wash trading. Start playing.</p>
+                <div class="skr-stats">
+                    <div class="skr-stat">
+                        <div class="skr-stat-value">6-10</div>
+                        <div class="skr-stat-label">Daily TXs</div>
+                    </div>
+                    <div class="skr-stat">
+                        <div class="skr-stat-value">~$0.01</div>
+                        <div class="skr-stat-label">Daily Gas</div>
+                    </div>
+                    <div class="skr-stat">
+                        <div class="skr-stat-value">30s</div>
+                        <div class="skr-stat-label">Per Day</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UI States -->
+    <section class="states-section">
+        <div class="container">
+            <h3 class="states-title">Every State Matters</h3>
+        </div>
+        <div class="states-scroll" style="padding-left: 20px;">
+            <div class="state-preview alive">
+                <div class="state-preview-counter">47</div>
+                <div class="state-preview-label">Alive</div>
+                <div class="state-preview-msg">18:42:31 left</div>
+            </div>
+            <div class="state-preview danger">
+                <div class="state-preview-counter">47</div>
+                <div class="state-preview-label">Danger</div>
+                <div class="state-preview-msg">00:47:12 left</div>
+            </div>
+            <div class="state-preview dead">
+                <div class="state-preview-counter">0</div>
+                <div class="state-preview-label">Dead</div>
+                <div class="state-preview-msg">Lost 0.052 SOL</div>
+            </div>
+            <div class="state-preview success">
+                <div class="state-preview-counter">48</div>
+                <div class="state-preview-label">Survived</div>
+                <div class="state-preview-msg">+0.1% gained</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta" id="download">
+        <h2>How long can<br/>you survive?</h2>
+        <p>Your streak starts now.</p>
+        <div class="download-buttons">
+            <a href="https://dappstore.app/streak" class="download-btn primary">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4.5 18.5L7.5 15.5H21L18 18.5H4.5Z" fill="currentColor"/>
+                    <path d="M4.5 12.25L7.5 9.25H21L18 12.25H4.5Z" fill="currentColor"/>
+                    <path d="M18 5.5L21 8.5H7.5L4.5 5.5H18Z" fill="currentColor"/>
+                </svg>
+                SOLANA dAPP STORE
+            </a>
+            <a href="https://streak.app" class="download-btn secondary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+                WEB APP (ANY WALLET)
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">STRE<span class="a">A</span>K</div>
+        <div class="footer-links">
+            <a href="#">Twitter/X</a>
+            <a href="#">Docs</a>
+            <a href="#">Contract</a>
+            <a href="#">Support</a>
+        </div>
+        <div class="footer-ecosystem">
+            <span>POWERED BY</span>
+            <svg viewBox="0 0 24 24" fill="white">
+                <path d="M4.5 18.5L7.5 15.5H21L18 18.5H4.5ZM4.5 12.25L7.5 9.25H21L18 12.25H4.5ZM18 5.5L21 8.5H7.5L4.5 5.5H18Z"/>
+            </svg>
+        </div>
+    </footer>
+</body>
+</html>

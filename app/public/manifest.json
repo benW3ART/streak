@@ -1,0 +1,27 @@
+{
+  "name": "STREAK - Daily Check-in Game",
+  "short_name": "STREAK",
+  "description": "Miss one day, lose everything. Daily check-in game for Solana Seeker.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192x192.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["games", "finance"],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

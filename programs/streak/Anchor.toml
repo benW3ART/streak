@@ -1,0 +1,24 @@
+[toolchain]
+
+[features]
+seeds = false
+skip-lint = false
+
+[programs.localnet]
+streak = "STRKxPtN1V5HYxhA3cVsXQKuaqkYQxJgKwFT1MH3uwM"
+
+[programs.devnet]
+streak = "STRKxPtN1V5HYxhA3cVsXQKuaqkYQxJgKwFT1MH3uwM"
+
+[programs.mainnet]
+streak = "STRKxPtN1V5HYxhA3cVsXQKuaqkYQxJgKwFT1MH3uwM"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npx ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

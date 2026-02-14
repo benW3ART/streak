@@ -1,0 +1,1279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specifications
+  project="STREAK"
+  version="1.1"
+  date="2026-01-29"
+  status="draft">
+
+  <metadata>
+    <created>2026-01-29</created>
+    <discovery-ref>.claude/discovery/DISCOVERY.xml</discovery-ref>
+    <scope>MVP - Core Loop + Bonus Windows + Leaderboard + Referrals</scope>
+  </metadata>
+
+  <!-- ============================================== -->
+  <!-- USER STORIES                                   -->
+  <!-- ============================================== -->
+  <user-stories>
+
+    <!-- ==================== CORE LOOP ==================== -->
+
+    <!-- US-001: Connect Wallet -->
+    <story id="US-001" priority="must" persona="P001,P002">
+      <title>Connect Wallet</title>
+      <narrative>
+        <as-a>Seeker user</as-a>
+        <i-want>to connect my Seed Vault wallet</i-want>
+        <so-that>I can stake SOL and start playing</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-001-1" testable="true">
+          <given>I am on the home screen and not connected</given>
+          <when>I tap START</when>
+          <then>Seed Vault prompt appears for wallet connection</then>
+          <and>I authenticate with fingerprint</and>
+          <and>my wallet address is displayed (truncated)</and>
+        </criterion>
+        <criterion id="AC-001-2" testable="true">
+          <given>I reject the Seed Vault prompt</given>
+          <when>the connection fails</when>
+          <then>I remain on home screen</then>
+          <and>I can tap START again to retry</and>
+        </criterion>
+        <criterion id="AC-001-3" testable="true">
+          <given>I am already connected</given>
+          <when>I return to the app</when>
+          <then>my wallet auto-reconnects</then>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-001"/>
+      </business-rules>
+    </story>
+
+    <!-- US-002: Stake to Enter -->
+    <story id="US-002" priority="must" persona="P001,P002">
+      <title>Stake SOL to Enter Game</title>
+      <narrative>
+        <as-a>connected user without active stake</as-a>
+        <i-want>to stake SOL to join the game</i-want>
+        <so-that>I can start building my streak</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-002-1" testable="true">
+          <given>I am connected and have no active stake</given>
+          <when>I view the stake screen</when>
+          <then>I see a slider with min 0.05 SOL</then>
+          <and>slider defaults to minimum (0.05 SOL)</and>
+          <and>slider max is my wallet balance minus 0.01 SOL (for fees)</and>
+        </criterion>
+        <criterion id="AC-002-2" testable="true">
+          <given>I have selected a stake amount</given>
+          <when>I tap "STAKE AND BEGIN"</when>
+          <then>Seed Vault prompts for transaction confirmation</then>
+          <and>on fingerprint confirm, SOL transfers to program</and>
+          <and>I see my Day 1 streak screen</and>
+        </criterion>
+        <criterion id="AC-002-3" testable="true">
+          <given>I have less than 0.05 SOL in wallet</given>
+          <when>I try to stake</when>
+          <then>stake button is disabled</then>
+          <and>I see "Insufficient balance" message</and>
+        </criterion>
+        <criterion id="AC-002-4" testable="true">
+          <given>transaction fails (network error, rejected)</given>
+          <when>the error occurs</when>
+          <then>I see error message</then>
+          <and>my SOL is not deducted</and>
+          <and>I can retry</and>
+        </criterion>
+        <criterion id="AC-002-5" testable="true">
+          <given>I was referred by another player</given>
+          <when>I stake successfully</when>
+          <then>referral relationship is recorded on-chain</then>
+          <and>referrer's chain count increases</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-002"/>
+        <rule-ref id="BR-003"/>
+        <rule-ref id="BR-004"/>
+      </business-rules>
+    </story>
+
+    <!-- US-003: Daily Check-in -->
+    <story id="US-003" priority="must" persona="P001,P002">
+      <title>Daily Check-in</title>
+      <narrative>
+        <as-a>player with active stake</as-a>
+        <i-want>to check in once per day</i-want>
+        <so-that>I keep my streak alive and grow my stake</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-003-1" testable="true">
+          <given>I have active stake and haven't checked in today</given>
+          <when>I tap the check-in button</when>
+          <then>Seed Vault prompts for transaction signature</then>
+          <and>on confirm, check-in transaction is recorded on-chain</and>
+          <and>my streak day increments by 1</and>
+          <and>my stake grows by 0.1%</and>
+        </criterion>
+        <criterion id="AC-003-2" testable="true">
+          <given>I have already checked in today</given>
+          <when>I view the app</when>
+          <then>check-in button is disabled/hidden</then>
+          <and>I see "Checked in! Next window: [countdown]"</and>
+        </criterion>
+        <criterion id="AC-003-3" testable="true">
+          <given>it is 23:59 UTC and I haven't checked in</given>
+          <when>I view the app</when>
+          <then>I see urgent warning "1 minute left!"</then>
+          <and>check-in button is prominently displayed</and>
+        </criterion>
+        <criterion id="AC-003-4" testable="true">
+          <given>check-in transaction fails</given>
+          <when>I retry</when>
+          <then>I can attempt check-in again</then>
+          <and>my streak is not affected until 00:00 UTC</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-005"/>
+        <rule-ref id="BR-006"/>
+        <rule-ref id="BR-007"/>
+      </business-rules>
+    </story>
+
+    <!-- US-004: View Streak Status -->
+    <story id="US-004" priority="must" persona="P001,P002">
+      <title>View Streak Status</title>
+      <narrative>
+        <as-a>player with active stake</as-a>
+        <i-want>to see my current streak and stake</i-want>
+        <so-that>I know my progress at a glance</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-004-1" testable="true">
+          <given>I have active stake</given>
+          <when>I open the app</when>
+          <then>I see my current day number with fire emoji</then>
+          <and>I see my current stake amount in SOL</and>
+          <and>I see countdown to next check-in window</and>
+        </criterion>
+        <criterion id="AC-004-2" testable="true">
+          <given>I have checked in today</given>
+          <when>I view status</when>
+          <then>countdown shows time until 00:00 UTC</then>
+          <and>status shows "Safe until [time]"</and>
+        </criterion>
+        <criterion id="AC-004-3" testable="true">
+          <given>I have NOT checked in today</given>
+          <when>I view status</when>
+          <then>countdown shows time remaining in current window</then>
+          <and>status shows "Check in now!" with urgency</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-005"/>
+      </business-rules>
+    </story>
+
+    <!-- US-005: Death (Miss Check-in) -->
+    <story id="US-005" priority="must" persona="P001,P002">
+      <title>Death - Lose Stake on Missed Day</title>
+      <narrative>
+        <as-a>player who missed a check-in</as-a>
+        <i-want>the game rules to apply fairly</i-want>
+        <so-that>the stakes feel real for everyone</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-005-1" testable="true">
+          <given>I have active stake and no lifelines</given>
+          <when>00:00 UTC passes without my check-in</when>
+          <then>my stake is transferred to the pool</then>
+          <and>3% goes to protocol treasury</and>
+          <and>5% goes to each referrer (up to 3 levels)</and>
+          <and>remaining goes to survivor pool</and>
+          <and>my streak resets to 0</and>
+        </criterion>
+        <criterion id="AC-005-2" testable="true">
+          <given>I died (missed check-in)</given>
+          <when>I open the app next</when>
+          <then>I see "You died" message</then>
+          <and>I see how much I lost</and>
+          <and>I see option to stake again</and>
+        </criterion>
+        <criterion id="AC-005-3" testable="true">
+          <given>I have a lifeline available</given>
+          <when>00:00 UTC passes without my check-in</when>
+          <then>my lifeline is consumed</then>
+          <and>I survive with streak intact</and>
+          <and>I see "Lifeline saved you!" notification</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-008"/>
+        <rule-ref id="BR-009"/>
+        <rule-ref id="BR-010"/>
+        <rule-ref id="BR-020"/>
+      </business-rules>
+    </story>
+
+    <!-- US-006: New User Grace Period -->
+    <story id="US-006" priority="must" persona="P002">
+      <title>Grace Period for Late Joiners</title>
+      <narrative>
+        <as-a>new user joining late in the day</as-a>
+        <i-want>a fair start</i-want>
+        <so-that>I don't die immediately after staking</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-006-1" testable="true">
+          <given>current time is after 23:55 UTC</given>
+          <when>I stake for the first time</when>
+          <then>my Day 1 starts at next 00:00 UTC</then>
+          <and>I am not required to check in until following day</and>
+        </criterion>
+        <criterion id="AC-006-2" testable="true">
+          <given>current time is before 23:55 UTC</given>
+          <when>I stake for the first time</when>
+          <then>my Day 1 starts immediately</then>
+          <and>I must check in before current day ends</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-011"/>
+      </business-rules>
+    </story>
+
+    <!-- US-007: View Global Stats -->
+    <story id="US-007" priority="must" persona="P001,P002">
+      <title>View Global Game Stats</title>
+      <narrative>
+        <as-a>visitor or player</as-a>
+        <i-want>to see total players, pool size, and recent deaths</i-want>
+        <so-that>I understand the game's scale and activity</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-007-1" testable="true">
+          <given>I am on the home screen</given>
+          <when>I view the stats</when>
+          <then>I see total active players count</then>
+          <and>I see total SOL in pool</and>
+          <and>I see "Last death: X minutes ago"</and>
+        </criterion>
+        <criterion id="AC-007-2" testable="true">
+          <given>stats are displayed</given>
+          <when>data updates on-chain</when>
+          <then>display refreshes within 30 seconds</then>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-012"/>
+      </business-rules>
+    </story>
+
+    <!-- US-008: Withdraw (Quit Game) -->
+    <story id="US-008" priority="must" persona="P001,P002">
+      <title>Withdraw Stake (Quit)</title>
+      <narrative>
+        <as-a>player who wants to quit</as-a>
+        <i-want>to withdraw my current stake</i-want>
+        <so-that>I can exit with my money</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-008-1" testable="true">
+          <given>I have active stake</given>
+          <when>I tap "Withdraw"</when>
+          <then>I see confirmation: "Withdraw X SOL and end streak?"</then>
+        </criterion>
+        <criterion id="AC-008-2" testable="true">
+          <given>I confirm withdrawal</given>
+          <when>transaction completes</when>
+          <then>my full stake (including growth) is returned</then>
+          <and>my streak resets to 0</and>
+          <and>I see success message</and>
+        </criterion>
+        <criterion id="AC-008-3" testable="true">
+          <given>I have pending rewards from deaths</given>
+          <when>I withdraw</when>
+          <then>rewards are included in withdrawal</then>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-013"/>
+      </business-rules>
+    </story>
+
+    <!-- ==================== BONUS WINDOWS ==================== -->
+
+    <!-- US-009: Bonus Window Appears -->
+    <story id="US-009" priority="must" persona="P001,P002">
+      <title>Bonus Window Notification</title>
+      <narrative>
+        <as-a>active player</as-a>
+        <i-want>to be notified when a bonus window appears</i-want>
+        <so-that>I can claim extra rewards</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-009-1" testable="true">
+          <given>I have active stake</given>
+          <when>a bonus window starts</when>
+          <then>the app shows bonus window indicator</then>
+          <and>countdown shows time remaining (15 minutes max)</and>
+        </criterion>
+        <criterion id="AC-009-2" testable="true">
+          <given>I am viewing the app during a bonus window</given>
+          <when>I see the bonus indicator</when>
+          <then>a "CLAIM BONUS" button is visible</then>
+        </criterion>
+        <criterion id="AC-009-3" testable="true">
+          <given>no bonus window is active</given>
+          <when>I view the app</when>
+          <then>no bonus indicator is shown</then>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-014"/>
+        <rule-ref id="BR-015"/>
+      </business-rules>
+    </story>
+
+    <!-- US-010: Claim Bonus -->
+    <story id="US-010" priority="must" persona="P001,P002">
+      <title>Claim Bonus During Window</title>
+      <narrative>
+        <as-a>active player during a bonus window</as-a>
+        <i-want>to claim the bonus</i-want>
+        <so-that>I get extra stake growth</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-010-1" testable="true">
+          <given>a bonus window is active</given>
+          <when>I tap "CLAIM BONUS"</when>
+          <then>Seed Vault prompts for transaction signature</then>
+          <and>on confirm, bonus is recorded on-chain</and>
+          <and>my stake grows by 0.05% extra</and>
+        </criterion>
+        <criterion id="AC-010-2" testable="true">
+          <given>I already claimed this bonus window</given>
+          <when>I view the app</when>
+          <then>claim button is disabled</then>
+          <and>I see "Bonus claimed!" status</and>
+        </criterion>
+        <criterion id="AC-010-3" testable="true">
+          <given>bonus window expires</given>
+          <when>I try to claim</when>
+          <then>claim fails with "Window closed" message</then>
+          <and>no penalty is applied</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-016"/>
+        <rule-ref id="BR-017"/>
+      </business-rules>
+    </story>
+
+    <!-- ==================== LEADERBOARD ==================== -->
+
+    <!-- US-011: View Leaderboard -->
+    <story id="US-011" priority="must" persona="P001">
+      <title>View Leaderboard</title>
+      <narrative>
+        <as-a>competitive player</as-a>
+        <i-want>to see rankings by streak and stake</i-want>
+        <so-that>I can compare myself to others</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-011-1" testable="true">
+          <given>I tap the Leaderboard tab</given>
+          <when>the leaderboard loads</when>
+          <then>I see top 100 players ranked by streak days</then>
+          <and>each entry shows: rank, wallet (truncated), streak days, stake</and>
+        </criterion>
+        <criterion id="AC-011-2" testable="true">
+          <given>I am on the leaderboard</given>
+          <when>I toggle to "By Stake"</when>
+          <then>players are re-ranked by total stake amount</then>
+        </criterion>
+        <criterion id="AC-011-3" testable="true">
+          <given>I am in the top 100</given>
+          <when>I view leaderboard</when>
+          <then>my entry is highlighted</then>
+        </criterion>
+        <criterion id="AC-011-4" testable="true">
+          <given>I am NOT in top 100</given>
+          <when>I view leaderboard</when>
+          <then>my rank and stats are shown at bottom</then>
+          <and>I see "Your rank: #X"</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-018"/>
+      </business-rules>
+    </story>
+
+    <!-- ==================== REFERRAL CHAIN ==================== -->
+
+    <!-- US-012: Generate Referral Link -->
+    <story id="US-012" priority="must" persona="P001">
+      <title>Generate Referral Link</title>
+      <narrative>
+        <as-a>active player</as-a>
+        <i-want>to generate my unique referral link</i-want>
+        <so-that>I can invite friends and earn from their deaths</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-012-1" testable="true">
+          <given>I have active stake</given>
+          <when>I tap the Invite tab</when>
+          <then>I see my unique referral link</then>
+          <and>I see a "Copy" button</and>
+        </criterion>
+        <criterion id="AC-012-2" testable="true">
+          <given>I tap "Copy"</given>
+          <when>the link is copied</when>
+          <then>I see "Copied!" confirmation</then>
+          <and>link is in clipboard</and>
+        </criterion>
+        <criterion id="AC-012-3" testable="true">
+          <given>I view my referral link</given>
+          <when>I check the format</when>
+          <then>link contains my wallet address as ref parameter</then>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-019"/>
+      </business-rules>
+    </story>
+
+    <!-- US-013: Join Via Referral -->
+    <story id="US-013" priority="must" persona="P002">
+      <title>Join Game Via Referral Link</title>
+      <narrative>
+        <as-a>new user with a referral link</as-a>
+        <i-want>to join through my friend's link</i-want>
+        <so-that>they benefit from my activity</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-013-1" testable="true">
+          <given>I open app with ?ref=[wallet] parameter</given>
+          <when>I view the stake screen</when>
+          <then>referrer's wallet is stored locally</then>
+          <and>I see "Referred by [truncated wallet]"</and>
+        </criterion>
+        <criterion id="AC-013-2" testable="true">
+          <given>I stake with a referral</given>
+          <when>transaction completes</when>
+          <then>referral relationship is recorded on-chain</then>
+          <and>I am added to referrer's chain</and>
+        </criterion>
+        <criterion id="AC-013-3" testable="true">
+          <given>referrer already has 3+ referrals</given>
+          <when>I stake through their link</when>
+          <then>referral still works (no limit on referrals)</then>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-019"/>
+        <rule-ref id="BR-020"/>
+      </business-rules>
+    </story>
+
+    <!-- US-014: Earn From Referral Deaths -->
+    <story id="US-014" priority="must" persona="P001">
+      <title>Earn From Referral Chain Deaths</title>
+      <narrative>
+        <as-a>player with referrals</as-a>
+        <i-want>to earn 5% when someone in my chain dies</i-want>
+        <so-that>I benefit from growing my network</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-014-1" testable="true">
+          <given>my direct referral (level 1) dies</given>
+          <when>death is processed</when>
+          <then>I receive 5% of their stake</then>
+        </criterion>
+        <criterion id="AC-014-2" testable="true">
+          <given>my referral's referral (level 2) dies</given>
+          <when>death is processed</when>
+          <then>I receive 5% of their stake</then>
+          <and>my level 1 referral also receives 5%</and>
+        </criterion>
+        <criterion id="AC-014-3" testable="true">
+          <given>someone 3 levels deep in my chain dies</given>
+          <when>death is processed</when>
+          <then>I receive 5% of their stake</then>
+          <and>levels 1 and 2 each receive 5%</and>
+        </criterion>
+        <criterion id="AC-014-4" testable="true">
+          <given>someone 4+ levels deep dies</given>
+          <when>death is processed</when>
+          <then>I receive nothing (only 3 levels deep)</then>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-020"/>
+        <rule-ref id="BR-021"/>
+      </business-rules>
+    </story>
+
+    <!-- US-015: View Referral Stats -->
+    <story id="US-015" priority="must" persona="P001">
+      <title>View Referral Chain Stats</title>
+      <narrative>
+        <as-a>player with referrals</as-a>
+        <i-want>to see my chain stats and earnings</i-want>
+        <so-that>I know how my network is performing</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-015-1" testable="true">
+          <given>I tap the Invite tab</given>
+          <when>stats load</when>
+          <then>I see total referrals (direct)</then>
+          <and>I see total chain size (3 levels)</and>
+          <and>I see total earned from deaths</and>
+        </criterion>
+        <criterion id="AC-015-2" testable="true">
+          <given>I have referrals</given>
+          <when>I view the list</when>
+          <then>I see each direct referral's wallet (truncated)</then>
+          <and>I see their current streak</then>
+          <and>I see if they're alive or dead</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-020"/>
+      </business-rules>
+    </story>
+
+    <!-- US-016: Earn Lifelines From Referrals -->
+    <story id="US-016" priority="must" persona="P001">
+      <title>Earn Lifelines From Referrals</title>
+      <narrative>
+        <as-a>player who refers friends</as-a>
+        <i-want>to earn lifelines for every 3 referrals</i-want>
+        <so-that>I have insurance against missed days</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-016-1" testable="true">
+          <given>I have 2 direct referrals</given>
+          <when>a 3rd person stakes with my link</when>
+          <then>I earn 1 lifeline</then>
+          <and>I see "+1 Lifeline!" notification</and>
+        </criterion>
+        <criterion id="AC-016-2" testable="true">
+          <given>I have 5 referrals</given>
+          <when>I view my lifelines</when>
+          <then>I have 1 lifeline (floor(5/3) = 1)</then>
+        </criterion>
+        <criterion id="AC-016-3" testable="true">
+          <given>I have 6 referrals</given>
+          <when>I view my lifelines</when>
+          <then>I have 2 lifelines</then>
+        </criterion>
+        <criterion id="AC-016-4" testable="true">
+          <given>I view my profile/stats</given>
+          <when>lifelines are displayed</when>
+          <then>I see current lifeline count</then>
+          <and>I see "X more referrals for next lifeline"</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-022"/>
+        <rule-ref id="BR-023"/>
+      </business-rules>
+    </story>
+
+    <!-- US-017: Lifeline Auto-Use -->
+    <story id="US-017" priority="must" persona="P001,P002">
+      <title>Lifeline Automatically Saves From Death</title>
+      <narrative>
+        <as-a>player with lifelines who missed check-in</as-a>
+        <i-want>my lifeline to automatically save me</i-want>
+        <so-that>I don't lose my streak</so-that>
+      </narrative>
+      <acceptance-criteria>
+        <criterion id="AC-017-1" testable="true">
+          <given>I have 1+ lifelines and missed check-in</given>
+          <when>00:00 UTC passes</when>
+          <then>1 lifeline is consumed</then>
+          <and>my stake is preserved</and>
+          <and>my streak continues</and>
+        </criterion>
+        <criterion id="AC-017-2" testable="true">
+          <given>lifeline was used</given>
+          <when>I open the app</when>
+          <then>I see "Lifeline saved you!" message</then>
+          <and>I see remaining lifeline count</and>
+        </criterion>
+        <criterion id="AC-017-3" testable="true">
+          <given>I have 0 lifelines and miss check-in</given>
+          <when>00:00 UTC passes</when>
+          <then>I die normally</then>
+          <and>stake goes to pool + referrers</and>
+        </criterion>
+      </acceptance-criteria>
+      <business-rules>
+        <rule-ref id="BR-023"/>
+        <rule-ref id="BR-024"/>
+      </business-rules>
+    </story>
+
+  </user-stories>
+
+  <!-- ============================================== -->
+  <!-- USE CASES                                      -->
+  <!-- ============================================== -->
+  <use-cases>
+
+    <use-case id="UC-001" story-ref="US-001,US-002">
+      <name>First-Time User Onboarding</name>
+      <actor>New Seeker User</actor>
+      <preconditions>
+        <condition>User has Solana Seeker with Seed Vault configured</condition>
+        <condition>User has at least 0.06 SOL in wallet</condition>
+        <condition>App is open in Seeker browser</condition>
+      </preconditions>
+      <main-flow>
+        <step order="1">User sees home screen with global stats and START button</step>
+        <step order="2">User taps START</step>
+        <step order="3">Seed Vault prompt appears for wallet connection</step>
+        <step order="4">User confirms with fingerprint</step>
+        <step order="5">App shows stake selection screen with slider</step>
+        <step order="6">User adjusts stake amount (or leaves at default 0.05 SOL)</step>
+        <step order="7">User taps "STAKE AND BEGIN"</step>
+        <step order="8">Seed Vault prompts for transaction signature</step>
+        <step order="9">User confirms with fingerprint</step>
+        <step order="10">Transaction confirms on-chain</step>
+        <step order="11">User sees Day 1 streak screen</step>
+      </main-flow>
+      <alternative-flows>
+        <flow id="AF-001" at-step="1">
+          <condition>User arrived via referral link (?ref=wallet)</condition>
+          <steps>
+            <step>1a. App stores referrer wallet</step>
+            <step>1b. "Referred by [wallet]" shown on stake screen</step>
+            <step>1c. On stake, referral recorded on-chain</step>
+          </steps>
+        </flow>
+        <flow id="AF-002" at-step="4">
+          <condition>User rejects wallet connection</condition>
+          <steps>
+            <step>4a. App shows "Connection cancelled" message</step>
+            <step>4b. User can tap START to retry</step>
+          </steps>
+        </flow>
+      </alternative-flows>
+      <postconditions>
+        <condition>User has active stake recorded on-chain</condition>
+        <condition>User's streak day is set to 1</condition>
+        <condition>Referral relationship recorded (if applicable)</condition>
+        <condition>Total under 60 seconds for happy path</condition>
+      </postconditions>
+    </use-case>
+
+    <use-case id="UC-002" story-ref="US-003,US-004">
+      <name>Daily Check-in Flow</name>
+      <actor>Active Player</actor>
+      <preconditions>
+        <condition>User has active stake</condition>
+        <condition>User has not checked in during current UTC day</condition>
+      </preconditions>
+      <main-flow>
+        <step order="1">User opens app</step>
+        <step order="2">App shows streak screen with "Check in now!" prompt</step>
+        <step order="3">User taps check-in button</step>
+        <step order="4">Seed Vault prompts for transaction signature</step>
+        <step order="5">User confirms with fingerprint</step>
+        <step order="6">Transaction confirms on-chain</step>
+        <step order="7">App updates: streak day +1, stake +0.1%</step>
+        <step order="8">User sees "Safe until [next window]" confirmation</step>
+      </main-flow>
+      <postconditions>
+        <condition>Check-in timestamp updated on-chain</condition>
+        <condition>Streak day incremented</condition>
+        <condition>Stake increased by 0.1%</condition>
+      </postconditions>
+    </use-case>
+
+    <use-case id="UC-003" story-ref="US-005,US-014,US-017">
+      <name>Death Processing</name>
+      <actor>System (Crank)</actor>
+      <preconditions>
+        <condition>UTC day has changed (00:00 UTC)</condition>
+        <condition>One or more players did not check in previous day</condition>
+      </preconditions>
+      <main-flow>
+        <step order="1">System identifies all players without check-in for previous day</step>
+        <step order="2">For each player, check if they have lifelines</step>
+        <step order="3">If lifeline exists: consume 1 lifeline, mark as saved, skip to next</step>
+        <step order="4">If no lifeline: calculate stake amount</step>
+        <step order="5">Transfer 3% to protocol treasury</step>
+        <step order="6">Transfer 5% to each referrer up to 3 levels (max 15%)</step>
+        <step order="7">Transfer remaining to survivor pool</step>
+        <step order="8">Mark player as dead (streak = 0, stake = 0)</step>
+        <step order="9">Update global stats</step>
+      </main-flow>
+      <postconditions>
+        <condition>Dead players have stake = 0</condition>
+        <condition>Saved players have lifelines - 1</condition>
+        <condition>Referrers received their cut</condition>
+        <condition>Protocol treasury increased</condition>
+      </postconditions>
+    </use-case>
+
+    <use-case id="UC-004" story-ref="US-009,US-010">
+      <name>Bonus Window Claim</name>
+      <actor>Active Player</actor>
+      <preconditions>
+        <condition>User has active stake</condition>
+        <condition>Bonus window is currently active</condition>
+        <condition>User has not claimed this window</condition>
+      </preconditions>
+      <main-flow>
+        <step order="1">User opens app or is already viewing</step>
+        <step order="2">App shows bonus window indicator with countdown</step>
+        <step order="3">User taps "CLAIM BONUS"</step>
+        <step order="4">Seed Vault prompts for transaction</step>
+        <step order="5">User confirms with fingerprint</step>
+        <step order="6">Transaction confirms: bonus_claims incremented</step>
+        <step order="7">Stake grows by additional 0.05%</step>
+        <step order="8">User sees "Bonus claimed!" confirmation</step>
+      </main-flow>
+      <alternative-flows>
+        <flow id="AF-001" at-step="3">
+          <condition>Window expires before claim</condition>
+          <steps>
+            <step>3a. Button becomes disabled</step>
+            <step>3b. "Window closed" message shown</step>
+            <step>3c. No penalty applied</step>
+          </steps>
+        </flow>
+      </alternative-flows>
+      <postconditions>
+        <condition>Bonus claim recorded for this window</condition>
+        <condition>Stake increased by 0.05%</condition>
+        <condition>Additional on-chain transaction for SKR farming</condition>
+      </postconditions>
+    </use-case>
+
+  </use-cases>
+
+  <!-- ============================================== -->
+  <!-- BUSINESS RULES                                 -->
+  <!-- ============================================== -->
+  <business-rules>
+
+    <!-- Core -->
+    <rule id="BR-001" category="authentication">
+      <name>Seed Vault Required</name>
+      <description>All wallet operations require Seed Vault biometric authentication</description>
+      <logic>wallet.connect() AND wallet.signTransaction() require fingerprint</logic>
+    </rule>
+
+    <rule id="BR-002" category="validation">
+      <name>Minimum Stake</name>
+      <description>Minimum stake amount is 0.05 SOL</description>
+      <logic>stake_amount >= 0.05 SOL (50,000,000 lamports)</logic>
+    </rule>
+
+    <rule id="BR-003" category="validation">
+      <name>Maximum Stake</name>
+      <description>Maximum stake is wallet balance minus 0.01 SOL for fees</description>
+      <logic>stake_amount &lt;= (wallet_balance - 0.01 SOL)</logic>
+    </rule>
+
+    <rule id="BR-004" category="constraint">
+      <name>Single Active Stake</name>
+      <description>Each wallet can only have one active stake at a time</description>
+      <logic>COUNT(active_stakes WHERE wallet = user.wallet) &lt;= 1</logic>
+    </rule>
+
+    <rule id="BR-005" category="timing">
+      <name>Daily Window</name>
+      <description>Check-in window runs from 00:00:00 UTC to 23:59:59 UTC each day</description>
+      <logic>window_start = 00:00:00 UTC; window_end = 23:59:59 UTC</logic>
+    </rule>
+
+    <rule id="BR-006" category="timing">
+      <name>One Check-in Per Day</name>
+      <description>Players can only check in once per UTC day</description>
+      <logic>last_checkin_date != current_utc_date</logic>
+    </rule>
+
+    <rule id="BR-007" category="calculation">
+      <name>Stake Growth Rate</name>
+      <description>Stake grows 0.1% per successful check-in</description>
+      <logic>new_stake = current_stake * 1.001</logic>
+    </rule>
+
+    <rule id="BR-008" category="process">
+      <name>Death Condition</name>
+      <description>Player dies if they have no lifelines and no check-in when day changes</description>
+      <logic>IF (has_active_stake AND lifelines == 0 AND last_checkin_date &lt; current_date) THEN death</logic>
+    </rule>
+
+    <rule id="BR-009" category="calculation">
+      <name>Protocol Fee</name>
+      <description>3% of dead player's stake goes to protocol treasury</description>
+      <logic>protocol_fee = dead_stake * 0.03</logic>
+    </rule>
+
+    <rule id="BR-010" category="calculation">
+      <name>Pool Distribution</name>
+      <description>After protocol fee and referrer cuts, remainder goes to survivor pool</description>
+      <logic>pool_addition = dead_stake - protocol_fee - referrer_cuts</logic>
+    </rule>
+
+    <rule id="BR-011" category="timing">
+      <name>Grace Period</name>
+      <description>New stakes made after 23:55 UTC start Day 1 at next 00:00 UTC</description>
+      <logic>IF (stake_time > 23:55 UTC) THEN day1_start = next_00:00_UTC</logic>
+    </rule>
+
+    <rule id="BR-012" category="display">
+      <name>Stats Refresh</name>
+      <description>Global stats refresh within 30 seconds of on-chain changes</description>
+      <logic>stats_refresh_interval &lt;= 30 seconds</logic>
+    </rule>
+
+    <rule id="BR-013" category="process">
+      <name>Voluntary Withdrawal</name>
+      <description>Players can withdraw full stake + accrued rewards at any time</description>
+      <logic>withdrawal_amount = current_stake + pending_rewards</logic>
+    </rule>
+
+    <!-- Bonus Windows -->
+    <rule id="BR-014" category="timing">
+      <name>Bonus Window Duration</name>
+      <description>Each bonus window lasts exactly 15 minutes</description>
+      <logic>window_duration = 15 minutes</logic>
+    </rule>
+
+    <rule id="BR-015" category="timing">
+      <name>Bonus Window Frequency</name>
+      <description>3-5 bonus windows appear per day at random times</description>
+      <logic>windows_per_day = random(3, 5); times = random within 00:00-23:59 UTC</logic>
+    </rule>
+
+    <rule id="BR-016" category="calculation">
+      <name>Bonus Reward</name>
+      <description>Claiming a bonus window adds 0.05% to stake</description>
+      <logic>bonus_growth = current_stake * 0.0005</logic>
+    </rule>
+
+    <rule id="BR-017" category="constraint">
+      <name>One Claim Per Window</name>
+      <description>Each player can only claim once per bonus window</description>
+      <logic>claims_this_window &lt;= 1</logic>
+    </rule>
+
+    <!-- Leaderboard -->
+    <rule id="BR-018" category="display">
+      <name>Leaderboard Size</name>
+      <description>Leaderboard shows top 100 players</description>
+      <logic>leaderboard_size = 100</logic>
+    </rule>
+
+    <!-- Referrals -->
+    <rule id="BR-019" category="referral">
+      <name>Referral Link Format</name>
+      <description>Referral link includes wallet address as query parameter</description>
+      <logic>link = base_url + "?ref=" + wallet_address</logic>
+    </rule>
+
+    <rule id="BR-020" category="calculation">
+      <name>Referral Death Cut</name>
+      <description>Each referrer in chain (up to 3 levels) gets 5% of dead player's stake</description>
+      <logic>referrer_cut = dead_stake * 0.05 for each level (max 3)</logic>
+    </rule>
+
+    <rule id="BR-021" category="constraint">
+      <name>Referral Depth Limit</name>
+      <description>Referral rewards only go 3 levels deep</description>
+      <logic>max_referral_depth = 3</logic>
+    </rule>
+
+    <rule id="BR-022" category="calculation">
+      <name>Lifeline Earning Rate</name>
+      <description>Player earns 1 lifeline for every 3 direct referrals</description>
+      <logic>lifelines_earned = floor(direct_referrals / 3)</logic>
+    </rule>
+
+    <rule id="BR-023" category="constraint">
+      <name>Lifeline Usage</name>
+      <description>Lifelines are consumed automatically when player would die</description>
+      <logic>IF (would_die AND lifelines > 0) THEN lifelines -= 1; survive</logic>
+    </rule>
+
+    <rule id="BR-024" category="constraint">
+      <name>Lifeline Non-Transferable</name>
+      <description>Lifelines cannot be transferred or sold between players</description>
+      <logic>lifelines are bound to player account</logic>
+    </rule>
+
+  </business-rules>
+
+  <!-- ============================================== -->
+  <!-- NON-FUNCTIONAL REQUIREMENTS                    -->
+  <!-- ============================================== -->
+  <non-functional-requirements>
+
+    <requirement id="NFR-001" category="performance">
+      <description>App loads and displays home screen within 2 seconds</description>
+      <metric>Time to First Contentful Paint</metric>
+      <target>&lt; 2000ms</target>
+    </requirement>
+
+    <requirement id="NFR-002" category="performance">
+      <description>On-chain transactions confirm within 5 seconds</description>
+      <metric>Transaction confirmation time</metric>
+      <target>&lt; 5000ms</target>
+    </requirement>
+
+    <requirement id="NFR-003" category="security">
+      <description>All wallet operations require biometric authentication</description>
+      <metric>Unauthorized transaction rate</metric>
+      <target>0</target>
+    </requirement>
+
+    <requirement id="NFR-004" category="reliability">
+      <description>Death processing runs reliably at 00:00 UTC daily</description>
+      <metric>Missed processing events</metric>
+      <target>0</target>
+    </requirement>
+
+    <requirement id="NFR-005" category="usability">
+      <description>First-time user can stake within 60 seconds</description>
+      <metric>Onboarding completion time</metric>
+      <target>&lt; 60 seconds</target>
+    </requirement>
+
+    <requirement id="NFR-006" category="compatibility">
+      <description>Works on Solana Seeker browser with Seed Vault</description>
+      <metric>Platform compatibility</metric>
+      <target>Solana Seeker (Android PWA)</target>
+    </requirement>
+
+    <requirement id="NFR-007" category="availability">
+      <description>Frontend available 99.9% uptime</description>
+      <metric>Uptime percentage</metric>
+      <target>99.9%</target>
+    </requirement>
+
+  </non-functional-requirements>
+
+  <!-- ============================================== -->
+  <!-- DATA MODEL                                     -->
+  <!-- ============================================== -->
+  <data-model>
+    <note>On-chain accounts managed by Anchor program</note>
+
+    <entity name="GameState" type="program-account">
+      <description>Global singleton holding game-wide state</description>
+      <field name="authority" type="Pubkey" required="true">Program authority</field>
+      <field name="treasury" type="Pubkey" required="true">Protocol fee recipient</field>
+      <field name="total_players" type="u64" required="true">Active player count</field>
+      <field name="total_pool" type="u64" required="true">Total SOL in pool (lamports)</field>
+      <field name="last_death_timestamp" type="i64" required="true">Unix timestamp of last death</field>
+      <field name="total_deaths" type="u64" required="true">Cumulative death count</field>
+      <field name="current_bonus_window" type="u64" required="true">Current bonus window ID (0 if none)</field>
+      <field name="bonus_window_end" type="i64" required="true">Timestamp when current window ends</field>
+      <field name="bump" type="u8" required="true">PDA bump seed</field>
+    </entity>
+
+    <entity name="Player" type="program-account">
+      <description>Per-player state, PDA derived from wallet address</description>
+      <field name="wallet" type="Pubkey" required="true" primary="true">Player's wallet</field>
+      <field name="stake" type="u64" required="true">Current stake in lamports</field>
+      <field name="streak_days" type="u32" required="true">Current streak count</field>
+      <field name="last_checkin" type="i64" required="true">Unix timestamp of last check-in</field>
+      <field name="start_day" type="i64" required="true">UTC day number when player started</field>
+      <field name="pending_rewards" type="u64" required="true">Unclaimed rewards from deaths</field>
+      <field name="is_active" type="bool" required="true">Whether player has active stake</field>
+      <field name="referrer" type="Pubkey" required="false">Wallet that referred this player</field>
+      <field name="direct_referrals" type="u32" required="true">Count of direct referrals</field>
+      <field name="lifelines" type="u8" required="true">Available lifelines (max 255)</field>
+      <field name="lifelines_used" type="u8" required="true">Total lifelines consumed</field>
+      <field name="last_bonus_claimed" type="u64" required="true">Last bonus window ID claimed</field>
+      <field name="total_bonus_claims" type="u32" required="true">Total bonus claims ever</field>
+      <field name="referral_earnings" type="u64" required="true">Total earned from referral deaths</field>
+      <field name="bump" type="u8" required="true">PDA bump seed</field>
+    </entity>
+
+    <entity name="BonusWindow" type="off-chain">
+      <description>Bonus window schedule (managed by backend/cron)</description>
+      <field name="window_id" type="u64" required="true">Unique window identifier</field>
+      <field name="start_time" type="i64" required="true">Unix timestamp start</field>
+      <field name="end_time" type="i64" required="true">Unix timestamp end (start + 15min)</field>
+      <field name="day" type="u32" required="true">UTC day this window belongs to</field>
+    </entity>
+
+    <entity name="LeaderboardEntry" type="off-chain-indexed">
+      <description>Cached leaderboard data for fast queries</description>
+      <field name="wallet" type="Pubkey" required="true">Player wallet</field>
+      <field name="streak_days" type="u32" required="true">Current streak</field>
+      <field name="stake" type="u64" required="true">Current stake</field>
+      <field name="rank_by_streak" type="u32" required="true">Rank by streak</field>
+      <field name="rank_by_stake" type="u32" required="true">Rank by stake</field>
+    </entity>
+
+  </data-model>
+
+  <!-- ============================================== -->
+  <!-- PROGRAM INSTRUCTIONS (Anchor)                  -->
+  <!-- ============================================== -->
+  <program-instructions>
+    <note>Solana program instructions via Anchor framework</note>
+
+    <instruction name="initialize">
+      <description>Initialize global game state (one-time admin call)</description>
+      <accounts>
+        <account name="game_state" writable="true" pda="true"/>
+        <account name="treasury" writable="false"/>
+        <account name="authority" signer="true"/>
+        <account name="system_program"/>
+      </accounts>
+      <args></args>
+    </instruction>
+
+    <instruction name="stake">
+      <description>Player stakes SOL to enter game</description>
+      <accounts>
+        <account name="game_state" writable="true"/>
+        <account name="player" writable="true" pda="true"/>
+        <account name="referrer_player" writable="true" optional="true">Referrer's player account if ref provided</account>
+        <account name="user" signer="true" writable="true"/>
+        <account name="system_program"/>
+      </accounts>
+      <args>
+        <arg name="amount" type="u64">Stake amount in lamports</arg>
+        <arg name="referrer" type="Option&lt;Pubkey&gt;">Optional referrer wallet</arg>
+      </args>
+    </instruction>
+
+    <instruction name="checkin">
+      <description>Player checks in for current day</description>
+      <accounts>
+        <account name="game_state" writable="true"/>
+        <account name="player" writable="true"/>
+        <account name="user" signer="true"/>
+      </accounts>
+      <args></args>
+    </instruction>
+
+    <instruction name="claim_bonus">
+      <description>Player claims current bonus window</description>
+      <accounts>
+        <account name="game_state" writable="false"/>
+        <account name="player" writable="true"/>
+        <account name="user" signer="true"/>
+      </accounts>
+      <args></args>
+    </instruction>
+
+    <instruction name="start_bonus_window">
+      <description>Start a new bonus window (authority only)</description>
+      <accounts>
+        <account name="game_state" writable="true"/>
+        <account name="authority" signer="true"/>
+      </accounts>
+      <args>
+        <arg name="window_id" type="u64">Unique window ID</arg>
+        <arg name="duration_seconds" type="i64">Window duration (default 900 = 15min)</arg>
+      </args>
+    </instruction>
+
+    <instruction name="process_death">
+      <description>Process death for a player who missed check-in (permissionless crank)</description>
+      <accounts>
+        <account name="game_state" writable="true"/>
+        <account name="treasury" writable="true"/>
+        <account name="dead_player" writable="true"/>
+        <account name="referrer_1" writable="true" optional="true">Level 1 referrer</account>
+        <account name="referrer_2" writable="true" optional="true">Level 2 referrer</account>
+        <account name="referrer_3" writable="true" optional="true">Level 3 referrer</account>
+      </accounts>
+      <args></args>
+    </instruction>
+
+    <instruction name="withdraw">
+      <description>Player withdraws stake and exits game</description>
+      <accounts>
+        <account name="game_state" writable="true"/>
+        <account name="player" writable="true"/>
+        <account name="user" signer="true" writable="true"/>
+      </accounts>
+      <args></args>
+    </instruction>
+
+    <instruction name="claim_rewards">
+      <description>Player claims pending rewards from pool/referrals</description>
+      <accounts>
+        <account name="game_state" writable="true"/>
+        <account name="player" writable="true"/>
+        <account name="user" signer="true" writable="true"/>
+      </accounts>
+      <args></args>
+    </instruction>
+
+  </program-instructions>
+
+  <!-- ============================================== -->
+  <!-- SCREENS                                        -->
+  <!-- ============================================== -->
+  <screens>
+
+    <screen id="SCR-001" name="Home (Not Connected)">
+      <path>/</path>
+      <condition>wallet not connected</condition>
+      <components>
+        <component type="text" name="Logo">STREAK with fire emoji</component>
+        <component type="stats" name="GlobalStats">Player count, pool size, last death</component>
+        <component type="button" name="StartButton">START - triggers wallet connect</component>
+      </components>
+      <flows-to>
+        <screen-ref id="SCR-002" on="wallet connected"/>
+      </flows-to>
+    </screen>
+
+    <screen id="SCR-002" name="Stake Entry">
+      <path>/</path>
+      <condition>wallet connected, no active stake</condition>
+      <components>
+        <component type="text" name="Header">Stake to play</component>
+        <component type="text" name="ReferredBy">Referred by [wallet] (if ref param)</component>
+        <component type="slider" name="StakeSlider">0.05 SOL min, max = balance - 0.01</component>
+        <component type="text" name="Rules">Miss one day = lose it all</component>
+        <component type="button" name="StakeButton">STAKE AND BEGIN</component>
+      </components>
+      <flows-to>
+        <screen-ref id="SCR-003" on="stake confirmed"/>
+      </flows-to>
+    </screen>
+
+    <screen id="SCR-003" name="Active Streak">
+      <path>/</path>
+      <condition>wallet connected, has active stake</condition>
+      <components>
+        <component type="text" name="DayDisplay">Day X with large fire emoji</component>
+        <component type="text" name="StakeDisplay">Your stake: X.XX SOL</component>
+        <component type="text" name="LifelineDisplay">Lifelines: X</component>
+        <component type="countdown" name="NextWindow">Time until next check-in / deadline</component>
+        <component type="button" name="CheckinButton">Check-in (if not done today)</component>
+        <component type="bonus" name="BonusIndicator">Bonus window alert (if active)</component>
+        <component type="status" name="SafeStatus">Safe status (if checked in)</component>
+        <component type="nav" name="BottomNav">Leaderboard, Invite, Settings</component>
+      </components>
+      <flows-to>
+        <screen-ref id="SCR-004" on="death detected"/>
+        <screen-ref id="SCR-005" on="tap leaderboard"/>
+        <screen-ref id="SCR-006" on="tap invite"/>
+      </flows-to>
+    </screen>
+
+    <screen id="SCR-004" name="Death Screen">
+      <path>/</path>
+      <condition>player died (missed check-in, no lifeline)</condition>
+      <components>
+        <component type="text" name="DeathMessage">You died</component>
+        <component type="text" name="LostAmount">Lost: X.XX SOL</component>
+        <component type="text" name="StreakAchieved">Reached: Day X</component>
+        <component type="button" name="PlayAgain">Play Again</component>
+      </components>
+      <flows-to>
+        <screen-ref id="SCR-002" on="play again"/>
+      </flows-to>
+    </screen>
+
+    <screen id="SCR-005" name="Leaderboard">
+      <path>/leaderboard</path>
+      <condition>user taps leaderboard tab</condition>
+      <components>
+        <component type="tabs" name="RankingTabs">By Streak | By Stake</component>
+        <component type="list" name="TopPlayers">Top 100 with rank, wallet, streak, stake</component>
+        <component type="highlight" name="UserRank">Your position (highlighted or at bottom)</component>
+        <component type="nav" name="BottomNav">Home, Leaderboard (active), Invite</component>
+      </components>
+    </screen>
+
+    <screen id="SCR-006" name="Invite / Referrals">
+      <path>/invite</path>
+      <condition>user taps invite tab</condition>
+      <components>
+        <component type="text" name="ReferralLink">Your unique link</component>
+        <component type="button" name="CopyButton">Copy link</component>
+        <component type="stats" name="ReferralStats">Direct referrals, chain size, earnings</component>
+        <component type="text" name="LifelineProgress">X referrals, Y more for next lifeline</component>
+        <component type="list" name="ReferralList">Direct referrals with status</component>
+        <component type="nav" name="BottomNav">Home, Leaderboard, Invite (active)</component>
+      </components>
+    </screen>
+
+    <screen id="SCR-007" name="Lifeline Saved">
+      <path>/</path>
+      <condition>player was saved by lifeline</condition>
+      <components>
+        <component type="text" name="SavedMessage">Lifeline saved you!</component>
+        <component type="text" name="RemainingLifelines">X lifelines remaining</component>
+        <component type="button" name="Continue">Continue</component>
+      </components>
+      <flows-to>
+        <screen-ref id="SCR-003" on="continue"/>
+      </flows-to>
+    </screen>
+
+  </screens>
+
+  <!-- ============================================== -->
+  <!-- GLOSSARY                                       -->
+  <!-- ============================================== -->
+  <glossary>
+    <term id="T-001">
+      <name>Streak</name>
+      <definition>Consecutive days a player has successfully checked in</definition>
+    </term>
+    <term id="T-002">
+      <name>Death</name>
+      <definition>When a player misses a daily check-in and loses their stake</definition>
+    </term>
+    <term id="T-003">
+      <name>Pool</name>
+      <definition>Accumulated SOL from dead players, distributed to survivors</definition>
+    </term>
+    <term id="T-004">
+      <name>Check-in</name>
+      <definition>Daily on-chain transaction that keeps a player's streak alive</definition>
+    </term>
+    <term id="T-005">
+      <name>Seed Vault</name>
+      <definition>Solana Seeker's secure wallet with biometric authentication</definition>
+    </term>
+    <term id="T-006">
+      <name>UTC Day</name>
+      <definition>24-hour period from 00:00:00 to 23:59:59 Coordinated Universal Time</definition>
+    </term>
+    <term id="T-007">
+      <name>Grace Period</name>
+      <definition>Protection for users who stake after 23:55 UTC, starting their Day 1 next window</definition>
+    </term>
+    <term id="T-008">
+      <name>Bonus Window</name>
+      <definition>Random 15-minute period where players can claim extra stake growth</definition>
+    </term>
+    <term id="T-009">
+      <name>Referral Chain</name>
+      <definition>Network of players connected through referral links, up to 3 levels deep</definition>
+    </term>
+    <term id="T-010">
+      <name>Lifeline</name>
+      <definition>One-time save that automatically prevents death when a player misses check-in</definition>
+    </term>
+    <term id="T-011">
+      <name>Crank</name>
+      <definition>Permissionless transaction that triggers death processing at day change</definition>
+    </term>
+  </glossary>
+
+</specifications>

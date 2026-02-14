@@ -1,0 +1,34 @@
+{
+  "name": "streak",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Daily check-in game for Solana Seeker",
+  "workspaces": [
+    "app",
+    "programs/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=app",
+    "build": "npm run build --workspace=app",
+    "start": "npm run start --workspace=app",
+    "lint": "npm run lint --workspace=app",
+    "anchor:build": "cd programs/streak && anchor build",
+    "anchor:test": "cd programs/streak && anchor test",
+    "anchor:deploy": "cd programs/streak && anchor deploy"
+  },
+  "author": "",
+  "license": "MIT",
+  "overrides": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5",
+    "ts-mocha": "^11.1.0",
+    "typescript": "^5.9.3"
+  }
+}

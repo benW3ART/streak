@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <rect width="192" height="192" rx="40" fill="#000000"/>
+  <defs>
+    <linearGradient id="fireGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" style="stop-color:#ea580c;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <path fill="url(#fireGrad)" d="M96 28c0 0-40 35-40 75c0 22 18 40 40 40s40-18 40-40c0-40-40-75-40-75zm0 95c-11 0-20-9-20-20c0-20 20-40 20-40s20 20 20 40c0 11-9 20-20 20z"/>
+  <circle cx="96" cy="108" r="12" fill="#fbbf24"/>
+</svg>

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<discovery
+  project="STREAK"
+  version="1.0"
+  date="2026-01-29"
+  interviewer="genius-interviewer">
+
+  <!-- EXECUTIVE SUMMARY -->
+  <executive-summary>
+    <one-liner>Daily check-in game for Solana Seeker where missing one day means losing everything</one-liner>
+    <problem>Seeker users need organic daily transactions for SKR Wave 2 farming but have no fun reason to transact</problem>
+    <solution-vision>Gamify daily transactions with real stakes - stake SOL, check in daily to grow, miss once and lose it all</solution-vision>
+    <success-metric>10,000 active users generating 6-10 organic transactions daily</success-metric>
+    <timeline>3 days to launch on Seeker dApp Store</timeline>
+  </executive-summary>
+
+  <!-- PROBLEM SPACE -->
+  <problem-space>
+    <problem-statement>
+      <description>SKR Wave 1 distributed only 20% of supply based on on-chain activity tiers. Wave 2 is coming with another 10%+ allocation. Seeker users are ranked by transaction volume and activity. Currently users resort to wash trading or forcing themselves to use random apps with no intrinsic motivation.</description>
+      <root-cause>No engaging reason to transact daily on Seeker - activity feels like a chore rather than entertainment</root-cause>
+      <impact>Users either game the system poorly (wash trading) or miss out on significant SKR allocations worth thousands of dollars</impact>
+      <urgency level="critical">Seeker Season 2 is live NOW. Wave 2 timing unknown but activity is being tracked. Every day without organic transactions is lost farming potential.</urgency>
+    </problem-statement>
+
+    <current-state>
+      <existing-solution>Wash trading between own wallets, forcing usage of random dApps, or simply not farming optimally</existing-solution>
+      <pain-points>
+        <pain>Wash trading feels pointless and may not count for rankings</pain>
+        <pain>Using random apps provides no entertainment value</pain>
+        <pain>No social element to make farming fun</pain>
+        <pain>Easy to forget to transact daily</pain>
+      </pain-points>
+      <what-works>Users already have Seed Vault habit - fingerprint to confirm is natural</what-works>
+    </current-state>
+  </problem-space>
+
+  <!-- USERS -->
+  <users>
+    <persona id="P001" type="primary">
+      <name>The SKR Degen</name>
+      <role>Crypto-native Seeker owner farming for Wave 2</role>
+      <tech-level>expert</tech-level>
+      <context>Already doing daily transactions manually, tweets about crypto, competitive about rankings</context>
+      <goals>
+        <goal priority="primary">Maximize SKR Wave 2 allocation through organic activity</goal>
+        <goal priority="secondary">Flex streak length on social media</goal>
+        <goal priority="tertiary">Make money from the game itself</goal>
+      </goals>
+      <frustrations>
+        <frustration>Daily farming feels like work, not play</frustration>
+        <frustration>No way to show off activity to others</frustration>
+        <frustration>Unclear if current farming strategy is optimal</frustration>
+      </frustrations>
+      <quote>"I check my Seeker 10 times a day anyway, might as well make it count"</quote>
+    </persona>
+
+    <persona id="P002" type="secondary">
+      <name>The Casual Seeker Owner</name>
+      <role>Bought Seeker for the hardware, curious about Web3</role>
+      <tech-level>intermediate</tech-level>
+      <context>Has SOL but doesn't actively trade, friend told them about SKR farming</context>
+      <goals>
+        <goal priority="primary">Not miss out on free money (SKR airdrop)</goal>
+        <goal priority="secondary">Have a simple daily habit that doesn't require thinking</goal>
+      </goals>
+      <frustrations>
+        <frustration>Crypto apps are confusing with too much jargon</frustration>
+        <frustration>Fear of losing money to scams or mistakes</frustration>
+        <frustration>Don't know what they should be doing with Seeker</frustration>
+      </frustrations>
+      <quote>"My friend said I should play this game on my Seeker, seems simple enough"</quote>
+    </persona>
+
+    <anti-personas>
+      <anti-persona>Non-Seeker users - app requires Seed Vault biometric, desktop/other phone users cannot play</anti-persona>
+      <anti-persona>Risk-averse crypto skeptics - the "lose it all" mechanic will scare them off (that's fine)</anti-persona>
+    </anti-personas>
+
+    <user-volumes>
+      <volume phase="launch">500 degens (Day 1)</volume>
+      <volume phase="1-month">5,000 users (50% casuals pulled in by degens)</volume>
+      <volume phase="3-months">10,000+ active daily users</volume>
+    </user-volumes>
+  </users>
+
+  <!-- BUSINESS -->
+  <business>
+    <model type="protocol-fee">
+      <description>Revenue from protocol fee on deaths, lifeline purchases, and premium subscriptions</description>
+      <revenue-source>3% fee on all stakes lost to pool upon player death</revenue-source>
+    </model>
+
+    <revenue-streams>
+      <stream id="RS001" type="primary">
+        <name>Death Fee</name>
+        <description>3% protocol fee taken from stakes when players die</description>
+        <example>Player dies with 2 SOL → 0.06 SOL to treasury, 1.94 SOL to pool</example>
+        <projection>1,000 deaths/week at 0.2 SOL avg = ~6 SOL/week</projection>
+      </stream>
+      <stream id="RS002" type="secondary">
+        <name>Lifeline Purchases</name>
+        <description>Emergency insurance for players without referral lifelines</description>
+        <price>0.1 SOL per lifeline</price>
+        <margin>100% (pure profit)</margin>
+      </stream>
+      <stream id="RS003" type="tertiary">
+        <name>Premium Notifications</name>
+        <description>All bonus window alerts + deadline warnings</description>
+        <price>0.01 SOL/month</price>
+        <free-tier>1 bonus window notification per day</free-tier>
+      </stream>
+    </revenue-streams>
+
+    <success-metrics>
+      <kpi id="KPI001" target="500" timeline="day 1">
+        <name>Launch Users</name>
+        <measurement>Unique wallets with active stakes</measurement>
+      </kpi>
+      <kpi id="KPI002" target="5000" timeline="30 days">
+        <name>Monthly Active Users</name>
+        <measurement>Unique wallets checking in within 30 day period</measurement>
+      </kpi>
+      <kpi id="KPI003" target="50 SOL" timeline="30 days">
+        <name>Pool Size</name>
+        <measurement>Total SOL in death pool</measurement>
+      </kpi>
+      <kpi id="KPI004" target="750000" timeline="wave-2">
+        <name>SKR Developer Airdrop</name>
+        <measurement>SKR tokens received for qualifying dApp</measurement>
+      </kpi>
+    </success-metrics>
+
+    <competition>
+      <competitor name="Manual Farming">
+        <strengths>No risk of losing stake</strengths>
+        <weaknesses>Boring, easy to forget, no social element</weaknesses>
+      </competitor>
+      <competitor name="Random dApps">
+        <strengths>Variety of activities</strengths>
+        <weaknesses>No cohesive daily habit, scattered attention</weaknesses>
+      </competitor>
+      <differentiation>Only app that makes daily transactions genuinely fun with social mechanics and real stakes</differentiation>
+    </competition>
+
+    <budget>
+      <monthly>$200/month for infrastructure</monthly>
+      <upfront>2 SOL for deployment and initial testing</upfront>
+      <flexibility>Fixed - lean operation</flexibility>
+    </budget>
+  </business>
+
+  <!-- CONSTRAINTS -->
+  <constraints>
+    <technical>
+      <constraint type="must" category="platform">
+        <description>Must run on Solana Seeker with Seed Vault integration</description>
+        <reason>Core value prop is biometric anti-bot + SKR farming</reason>
+      </constraint>
+      <constraint type="must" category="technology">
+        <description>PWA architecture (Next.js + Tailwind)</description>
+        <reason>Faster to ship than native Android, dApp Store accepts PWAs</reason>
+      </constraint>
+      <constraint type="must" category="technology">
+        <description>Anchor framework for Solana program</description>
+        <reason>Industry standard, safer than raw Solana</reason>
+      </constraint>
+      <constraint type="must" category="technology">
+        <description>Solana Mobile Wallet Adapter for Seed Vault</description>
+        <reason>Required for biometric wallet connection</reason>
+      </constraint>
+    </technical>
+
+    <business>
+      <constraint type="must" category="timing">
+        <description>Must ship to dApp Store before SKR Wave 2</description>
+        <reason>Developer airdrop qualification requires live app</reason>
+      </constraint>
+      <constraint type="should" category="ux">
+        <description>Under 60 second onboarding to first stake</description>
+        <reason>Degens have low patience, casuals need simplicity</reason>
+      </constraint>
+    </business>
+
+    <timeline>
+      <deadline date="2026-02-01" hard="true">
+        <reason>3 day build target to ship before Wave 2 timing becomes clearer</reason>
+      </deadline>
+    </timeline>
+  </constraints>
+
+  <!-- FEATURES (Raw) -->
+  <features-raw>
+    <note>Raw features from interview. genius-specs will formalize into user stories.</note>
+
+    <!-- Core Loop -->
+    <feature id="F001" priority="must" category="core">
+      <name>Stake to Enter</name>
+      <description>User stakes SOL (0.05 minimum) to join the game. Slider UI to pick amount, default at minimum.</description>
+      <user-value>Simple entry point with choice of risk level</user-value>
+      <business-value>Creates pool for redistribution, enables all game mechanics</business-value>
+    </feature>
+
+    <feature id="F002" priority="must" category="core">
+      <name>Daily Check-in</name>
+      <description>Tap button + Seed Vault fingerprint = on-chain transaction recorded with timestamp. Resets at 00:00 UTC daily.</description>
+      <user-value>One tap to stay alive, generates SKR farming activity</user-value>
+      <business-value>Core engagement loop, creates organic transactions</business-value>
+    </feature>
+
+    <feature id="F003" priority="must" category="core">
+      <name>Stake Growth</name>
+      <description>Stake grows 0.1% per successful daily check-in</description>
+      <user-value>Reward for consistency, compounding motivation</user-value>
+      <business-value>Increases stakes over time, bigger deaths = more fees</business-value>
+    </feature>
+
+    <feature id="F004" priority="must" category="core">
+      <name>Death Mechanic</name>
+      <description>Miss one day = lose entire stake to pool. 3% goes to protocol, rest distributed.</description>
+      <user-value>Real stakes create real engagement</user-value>
+      <business-value>Primary revenue source, creates pool for redistribution</business-value>
+    </feature>
+
+    <feature id="F005" priority="must" category="core">
+      <name>New User Grace Period</name>
+      <description>Users joining after 11:55pm UTC start their Day 1 next window</description>
+      <user-value>Fair start, no instant deaths</user-value>
+      <business-value>Prevents frustrating churn on signup</business-value>
+    </feature>
+
+    <!-- Engagement -->
+    <feature id="F006" priority="should" category="engagement">
+      <name>Bonus Windows</name>
+      <description>Random 15-minute windows throughout day. Tap during window for small boost. No penalty for missing.</description>
+      <user-value>Surprise dopamine hits, extra engagement without stress</user-value>
+      <business-value>Additional transactions, reason to check app multiple times daily</business-value>
+    </feature>
+
+    <feature id="F007" priority="should" category="engagement">
+      <name>Leaderboard</name>
+      <description>Rankings by streak length and total stake</description>
+      <user-value>Competition, social proof, bragging rights</user-value>
+      <business-value>Drives retention, screenshot-worthy for social sharing</business-value>
+    </feature>
+
+    <!-- Social -->
+    <feature id="F008" priority="should" category="social">
+      <name>Referral Chain</name>
+      <description>Invite friends, earn 5% of every death in your chain, 3 levels deep</description>
+      <user-value>Passive income from network, reason to invite friends</user-value>
+      <business-value>Viral growth mechanism</business-value>
+    </feature>
+
+    <feature id="F009" priority="should" category="social">
+      <name>Lifelines from Referrals</name>
+      <description>Every 3 referrals grants 1 Lifeline - a free pass that saves you from one missed day</description>
+      <user-value>Insurance for mistakes, reward for inviting</user-value>
+      <business-value>Drives referral behavior</business-value>
+    </feature>
+
+    <feature id="F010" priority="could" category="social">
+      <name>Guardian System</name>
+      <description>Become Guardian for up to 3 people. Get notified if they miss bonus windows, can ping them once per week. Both rewarded if they survive because of you.</description>
+      <user-value>Help friends stay alive, social accountability</user-value>
+      <business-value>Retention through social bonds, casuals get "carried"</business-value>
+    </feature>
+
+    <feature id="F011" priority="could" category="social">
+      <name>Heir System</name>
+      <description>Pick one referral as Heir. If you die, 50% of stake goes to them instead of pool. Unlocks after 7 days alive.</description>
+      <user-value>Legacy mechanic, deeper social investment</user-value>
+      <business-value>Stronger referral relationships, 50% still goes to pool</business-value>
+    </feature>
+
+    <!-- Monetization -->
+    <feature id="F012" priority="should" category="monetization">
+      <name>Lifeline Purchase</name>
+      <description>Buy emergency lifeline for 0.1 SOL when you have none from referrals</description>
+      <user-value>Last-resort insurance for long streaks</user-value>
+      <business-value>Pure profit revenue stream</business-value>
+    </feature>
+
+    <feature id="F013" priority="could" category="monetization">
+      <name>Premium Notifications</name>
+      <description>0.01 SOL/month for all bonus window alerts + "1 hour until deadline" warning. Free tier gets 1 notification/day.</description>
+      <user-value>Never miss a bonus or deadline</user-value>
+      <business-value>Recurring revenue, covers infrastructure</business-value>
+    </feature>
+
+    <!-- Display -->
+    <feature id="F014" priority="must" category="display">
+      <name>Home Screen</name>
+      <description>Shows total players, pool size, last death time, and START button for new users OR current streak/stake for active users</description>
+      <user-value>Instant understanding of game state</user-value>
+      <business-value>Social proof drives signups</business-value>
+    </feature>
+
+    <feature id="F015" priority="must" category="display">
+      <name>Streak Display</name>
+      <description>Current day number with fire emoji, stake amount, time until next check-in window</description>
+      <user-value>Clear status at a glance</user-value>
+      <business-value>Core UX for daily engagement</business-value>
+    </feature>
+  </features-raw>
+
+  <!-- RISKS -->
+  <risks>
+    <risk id="R001" probability="medium" impact="critical">
+      <category>technical</category>
+      <description>Smart contract bug allowing stake theft or manipulation</description>
+      <mitigation>Anchor framework reduces risk, keep contract simple, test thoroughly, start with low stakes</mitigation>
+    </risk>
+    <risk id="R002" probability="low" impact="high">
+      <category>business</category>
+      <description>dApp Store rejection or delayed review</description>
+      <mitigation>Follow Solana Mobile guidelines, submit early, have direct contacts if possible</mitigation>
+    </risk>
+    <risk id="R003" probability="medium" impact="medium">
+      <category>product</category>
+      <description>Not enough users at launch to create exciting pool</description>
+      <mitigation>Seed initial pool, leverage degen Twitter, creator has existing network</mitigation>
+    </risk>
+    <risk id="R004" probability="low" impact="high">
+      <category>technical</category>
+      <description>Seed Vault / Mobile Wallet Adapter integration issues</description>
+      <mitigation>Use official SDK, test on real Seeker device early</mitigation>
+    </risk>
+    <risk id="R005" probability="medium" impact="low">
+      <category>project</category>
+      <description>Feature creep extending beyond 3-day timeline</description>
+      <mitigation>Strict MVP scope - core loop only, social features can come post-launch</mitigation>
+    </risk>
+  </risks>
+
+  <!-- MVP SCOPE -->
+  <mvp-scope>
+    <description>Minimum features required for Day 1 launch</description>
+    <included>
+      <feature ref="F001">Stake to Enter</feature>
+      <feature ref="F002">Daily Check-in</feature>
+      <feature ref="F003">Stake Growth</feature>
+      <feature ref="F004">Death Mechanic</feature>
+      <feature ref="F005">New User Grace Period</feature>
+      <feature ref="F014">Home Screen</feature>
+      <feature ref="F015">Streak Display</feature>
+    </included>
+    <post-mvp>
+      <feature ref="F006">Bonus Windows</feature>
+      <feature ref="F007">Leaderboard</feature>
+      <feature ref="F008">Referral Chain</feature>
+      <feature ref="F009">Lifelines from Referrals</feature>
+      <feature ref="F010">Guardian System</feature>
+      <feature ref="F011">Heir System</feature>
+      <feature ref="F012">Lifeline Purchase</feature>
+      <feature ref="F013">Premium Notifications</feature>
+    </post-mvp>
+  </mvp-scope>
+
+  <!-- OPEN QUESTIONS -->
+  <open-questions>
+    <question priority="non-blocking" owner="developer">
+      How should pool redistribution work - pro-rata to survivors, or lottery-style to random active player?
+    </question>
+    <question priority="non-blocking" owner="developer">
+      Should there be a minimum pool threshold before deaths trigger redistribution?
+    </question>
+  </open-questions>
+
+  <!-- NEXT STEPS -->
+  <next-steps>
+    <handoff-to>genius-product-market-analyst</handoff-to>
+    <note>Given 3-day timeline, market analysis should be brief. Focus on competitive positioning and launch strategy.</note>
+  </next-steps>
+</discovery>
