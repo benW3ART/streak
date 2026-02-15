@@ -1,12 +1,11 @@
-FROM node:22-alpine AS builder
+FROM node:18-alpine AS builder
 RUN apk add --no-cache python3 make g++ linux-headers eudev-dev libusb-dev
 WORKDIR /app
-COPY app/package.json app/package-lock.json* ./
-RUN npm install
 COPY app/ .
+RUN npm install
 RUN npm run build
 
-FROM node:22-alpine AS runner
+FROM node:18-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /app/.next/standalone ./

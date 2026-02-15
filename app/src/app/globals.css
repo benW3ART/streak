@@ -3,11 +3,15 @@
 :root {
   --background: #000000;
   --foreground: #ffffff;
+  --streak-orange: #FF4D00;
+  --ember: #FF6B35;
   --orange-500: #f97316;
   --orange-600: #ea580c;
   --orange-700: #c2410c;
   --zinc-800: #27272a;
   --zinc-900: #18181b;
+  --alive-green: #00FF88;
+  --blood-red: #CC0000;
 }
 
 @theme inline {
@@ -103,4 +107,58 @@ button {
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+}
+
+/* Landing page animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(255, 77, 0, 0.4); }
+  50% { box-shadow: 0 0 60px rgba(255, 77, 0, 0.6); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom selection */
+::selection {
+  background: rgba(255, 77, 0, 0.3);
+  color: white;
+}
+
+/* Focus styles */
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--streak-orange);
+  outline-offset: 2px;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #FF4D00 0%, #FF6B35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
