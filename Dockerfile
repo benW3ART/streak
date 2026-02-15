@@ -1,3 +1,6 @@
+# FORCE REBUILD - DO NOT CACHE
+ARG CACHEBUST=1739594339
+
 FROM node:22-alpine AS builder
 RUN apk add --no-cache python3 make g++ linux-headers eudev-dev libusb-dev
 WORKDIR /app
@@ -14,4 +17,3 @@ COPY --from=builder /app/public ./public
 EXPOSE 3000
 ENV PORT=3000
 CMD ["node", "server.js"]
-# Cache bust: 1771130486
