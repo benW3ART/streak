@@ -1,9 +1,6 @@
 FROM node:22-alpine AS builder
+RUN apk add --no-cache python3 make g++ linux-headers eudev-dev libusb-dev
 WORKDIR /app
-
-# Install Python and build tools for native modules (usb/node-gyp)
-RUN apk add --no-cache python3 make g++ linux-headers eudev-dev
-
 COPY app/package.json app/package-lock.json* ./
 RUN npm install
 COPY app/ .
